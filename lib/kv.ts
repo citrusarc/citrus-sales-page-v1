@@ -16,12 +16,13 @@ export const KEY = {
   recentDownloads: "meta-ads:recent-downloads", // list of recent Basic downloads (state + time only)
 } as const
 
-const redisEnabled = () => Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN)
+const redisEnabled = () =>
+  Boolean(process.env.UPSTASH_REDIS_REST_URL?.trim() && process.env.UPSTASH_REDIS_REST_TOKEN?.trim())
 
 async function redis<T>(command: (string | number)[]): Promise<T> {
-  const res = await fetch(process.env.UPSTASH_REDIS_REST_URL!, {
+  const res = await fetch(process.env.UPSTASH_REDIS_REST_URL!.trim(), {
     method: "POST",
-    headers: { Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}` },
+    headers: { Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN!.trim()}` },
     body: JSON.stringify(command),
     cache: "no-store",
   })
