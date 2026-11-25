@@ -11,7 +11,7 @@ export function Eyebrow({ children, className }: { children: React.ReactNode; cl
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-2 text-xs font-semibold tracking-[0.18em] text-brand uppercase",
+        "inline-flex items-center gap-2 text-xs font-semibold tracking-[0.18em] text-brand-ink uppercase",
         className
       )}
     >
@@ -149,7 +149,7 @@ export function CountUp({ to, className }: { to: number; className?: string }) {
 }
 
 /** Renders [text](url) links inside a plain string. */
-export function Rich({ text }: { text: string }) {
+export function Rich({ text, linkClassName }: { text: string; linkClassName?: string }) {
   const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g)
   return (
     <>
@@ -157,7 +157,8 @@ export function Rich({ text }: { text: string }) {
         const m = p.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
         if (!m) return <React.Fragment key={i}>{p}</React.Fragment>
         const [, label, href] = m
-        const cls = "font-medium text-brand underline decoration-brand/30 underline-offset-2 hover:decoration-brand"
+        const cls =
+          linkClassName ?? "font-medium text-brand-ink underline decoration-brand-ink/30 underline-offset-2 hover:decoration-brand-ink"
         return href.startsWith("/") ? (
           <Link key={i} href={href} className={cls}>
             {label}

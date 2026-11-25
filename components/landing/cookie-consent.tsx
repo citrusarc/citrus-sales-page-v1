@@ -27,10 +27,14 @@ export function CookieConsent() {
     <div
       role="region"
       aria-label={c.label}
-      className="fixed right-4 bottom-4 left-4 z-95 hidden flex-col gap-4 rounded-2xl border border-white/15 bg-ink/95 p-5 text-white shadow-2xl backdrop-blur-md in-data-[consent=ask]:flex sm:right-auto sm:max-w-md"
+      className="fixed right-4 bottom-4 left-4 z-95 hidden flex-col gap-4 rounded-2xl border border-white/15 bg-ink p-5 text-white shadow-2xl in-data-[consent=ask]:flex sm:right-auto sm:max-w-md"
     >
       <p className="text-sm leading-relaxed text-white/85">
-        {c.message} <Rich text={c.privacyLink} />
+        {c.message}{" "}
+        <Rich
+          text={c.privacyLink}
+          linkClassName="font-medium text-brand-bright underline decoration-brand-bright/40 underline-offset-2 hover:decoration-brand-bright"
+        />
       </p>
       <div className="flex gap-2">
         <button

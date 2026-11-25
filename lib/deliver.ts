@@ -1,8 +1,6 @@
 // Server-side only. Emails the paid skill to the buyer, once per purchase.
 
-import { readFile } from "node:fs/promises"
-import path from "node:path"
-
+import { advancedZipBase64 } from "@/lib/advanced-zip"
 import { isPaidAdvanced, type ChipPurchase } from "@/lib/chip"
 import { addToSet, getValue, KEY, pushCapped, setSize } from "@/lib/kv"
 import { emailConfigured, sendEmail } from "@/lib/mailjet"
@@ -45,7 +43,16 @@ export async function deliverAdvanced(purchase: ChipPurchase | null, siteUrl: st
     return "disabled"
   }
 
-  if (!(await claim(purchase.id))) return "already"
+  // The sent log stops duplicate emails. If the store is unreachable (e.g.
+  // Upstash not set on Cloudflare), still send: a rare duplicate beats a buyer
+  // with no file.
+  let first = true
+  try {
+    first = await claim(purchase.id)
+  } catch (err) {
+    console.error("Sent log unavailable; sending anyway", err)
+  }
+  if (!first) return "already"
 
   const name = purchase.client?.full_name?.trim() || ""
   const lang = await buyerLang(purchase.id)
@@ -53,13 +60,12 @@ export async function deliverAdvanced(purchase: ChipPurchase | null, siteUrl: st
   const paidAt = purchase.paid_on ? new Date(purchase.paid_on * 1000) : new Date()
 
   try {
-    const zip = await readFile(path.join(process.cwd(), "private", ADVANCED.file))
     const msg = buyerEmail({ name, purchaseId: purchase.id, siteUrl, totalSen, paidAt, lang })
     await sendEmail({
       to: { email, name: name || undefined },
       replyTo: CONTACT.email,
       ...msg,
-      attachments: [{ filename: ADVANCED.file, contentType: "application/zip", base64: zip.toString("base64") }],
+      attachments: [{ filename: ADVANCED.file, contentType: "application/zip", base64: advancedZipBase64() }],
     })
   } catch (err) {
     console.error("Skill email failed", purchase.id, err)

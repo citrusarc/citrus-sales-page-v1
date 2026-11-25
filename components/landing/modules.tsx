@@ -104,7 +104,7 @@ export function Modules() {
                   >
                     {locked ? <Lock className="size-4" /> : <Icon className="size-5" />}
                   </span>
-                  <span className={cn("font-mono text-xs", active ? "text-white/40" : "text-muted-foreground")}>
+                  <span className={cn("font-mono text-xs", active ? "text-white/60" : "text-muted-foreground")}>
                     ({String(it.n).padStart(2, "0")})
                   </span>
                 </div>
@@ -123,7 +123,7 @@ export function Modules() {
               <span
                 className={cn(
                   "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold tracking-wide uppercase",
-                  selLocked ? "bg-muted text-muted-foreground" : "bg-accent text-brand"
+                  selLocked ? "bg-muted text-muted-foreground" : "bg-accent text-brand-ink"
                 )}
               >
                 {selLocked && <Lock className="size-3" />}
@@ -135,7 +135,7 @@ export function Modules() {
 
             <div className="mt-6 space-y-3">
               <div className="ml-8 rounded-2xl rounded-br-md bg-accent px-4 py-3">
-                <div className="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase">{t.modules.ask}</div>
+                <div className="text-[11px] font-semibold tracking-[0.14em] text-brand-ink uppercase">{t.modules.ask}</div>
                 <p className="mt-0.5 font-medium">“{m.ask}”</p>
               </div>
               <div className="mr-8 rounded-2xl rounded-bl-md bg-muted px-4 py-3">

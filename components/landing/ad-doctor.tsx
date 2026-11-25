@@ -150,7 +150,7 @@ export function AdDoctor() {
               ] as const
             ).map(([k, val]) => (
               <div key={k} className="bg-ink px-4 py-3.5">
-                <div className="text-xs text-white/50">{t.doctor.metrics[k]}</div>
+                <div className="text-xs text-white/65">{t.doctor.metrics[k]}</div>
                 <div className="mt-0.5 font-mono text-xl tabular-nums">{val}</div>
               </div>
             ))}
@@ -159,9 +159,9 @@ export function AdDoctor() {
           <div className="flex items-center gap-5">
             <Gauge score={look.score} />
             <div key={d.key} className="animate-in-up">
-              <div className="text-xs font-semibold tracking-[0.18em] text-brand uppercase">{t.doctor.verdictLabel}</div>
+              <div className="text-xs font-semibold tracking-[0.18em] text-brand-bright uppercase">{t.doctor.verdictLabel}</div>
               <h3 className="mt-1.5 flex items-center gap-2.5 text-2xl leading-tight font-semibold tracking-tight uppercase sm:text-3xl">
-                <Icon className="size-7 shrink-0 text-brand" />
+                <Icon className="size-7 shrink-0 text-brand-bright" />
                 {v.title}
               </h3>
             </div>
@@ -172,11 +172,11 @@ export function AdDoctor() {
           </p>
 
           <div key={`a-${d.key}`} className="animate-in-up rounded-2xl bg-brand p-5">
-            <div className="text-xs font-semibold tracking-[0.18em] text-white/80 uppercase">{t.doctor.actionLabel}</div>
+            <div className="text-xs font-semibold tracking-[0.18em] text-white uppercase">{t.doctor.actionLabel}</div>
             <p className="mt-1.5 font-medium">{v.action}</p>
           </div>
 
-          <p className="mt-auto text-xs leading-relaxed text-white/40">{t.doctor.disclaimer}</p>
+          <p className="mt-auto text-xs leading-relaxed text-white/60">{t.doctor.disclaimer}</p>
         </div>
       </div>
     </section>
@@ -192,7 +192,7 @@ function Gauge({ score }: { score: number }) {
       <path
         d={arc}
         fill="none"
-        stroke="var(--brand)"
+        stroke="var(--brand-bright)"
         strokeWidth="10"
         strokeLinecap="round"
         pathLength={100}

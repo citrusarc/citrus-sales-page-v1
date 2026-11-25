@@ -33,7 +33,7 @@ export function Myths() {
                   </span>
                 </div>
                 <p className="text-2xl leading-tight font-semibold tracking-tight">{m.myth}</p>
-                <span className="flex items-center gap-2 text-sm font-medium text-brand">
+                <span className="flex items-center gap-2 text-sm font-medium text-brand-ink">
                   <RotateCw className="size-4 transition-transform duration-500 group-hover:rotate-180" />
                   {t.myths.flip}
                 </span>
@@ -41,11 +41,11 @@ export function Myths() {
               {/* back: what the skill does */}
               <div className="flip-face flip-back absolute inset-0 flex flex-col justify-between rounded-3xl bg-ink p-6 text-white">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-mono text-white/40">({String(i + 1).padStart(2, "0")})</span>
-                  <span className="font-semibold tracking-[0.14em] text-brand uppercase">{t.myths.fixLabel}</span>
+                  <span className="font-mono text-white/60">({String(i + 1).padStart(2, "0")})</span>
+                  <span className="font-semibold tracking-[0.14em] text-brand-bright uppercase">{t.myths.fixLabel}</span>
                 </div>
                 <p className="text-lg leading-snug">{m.fix}</p>
-                <span className="font-mono text-xs text-white/40">meta-ads-basic</span>
+                <span className="font-mono text-xs text-white/60">meta-ads-basic</span>
               </div>
             </div>
           </button>

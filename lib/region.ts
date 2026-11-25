@@ -2,7 +2,8 @@
 // state name is kept, never the IP. Returns null when the host doesn't send
 // location (e.g. local dev) or the visitor isn't in Malaysia.
 //   Vercel:      x-vercel-ip-country / x-vercel-ip-country-region
-//   Cloudflare:  cf-ipcountry / cf-region-code ("Add visitor location headers")
+//   Cloudflare:  cf-ipcountry / cf-region-code / cf-region (turn on the Managed
+//                Transform "Add visitor location headers")
 
 const MY_STATES: Record<string, string> = {
   "01": "Johor",
@@ -28,5 +29,5 @@ export function malaysianState(h: Headers): string | null {
   if (country !== "MY") return null
   const raw = h.get("x-vercel-ip-country-region") ?? h.get("cf-region-code") ?? ""
   const code = raw.replace(/^MY-/i, "").padStart(2, "0")
-  return MY_STATES[code] ?? null
+  return MY_STATES[code] ?? h.get("cf-region") ?? null
 }

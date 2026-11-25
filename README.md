@@ -99,3 +99,31 @@ Bottom-right alerts show real events only: paid Advanced purchases (masked name)
   Consent Mode (analytics cookies only after "Benarkan" in the cookie notice; ads storage always denied).
   dataLayer events for GTM triggers: `file_download` (Basic), `begin_checkout`, `purchase` (once per purchase,
   GA4 ecommerce format with `transaction_id`, `value`, `currency: MYR`).
+
+## Google Tag Manager setup (one time)
+
+`scripts/gtm-container.json` holds the tags for GTM-K9CKZQXK:
+
+1. tagmanager.google.com → the container → **Admin → Import Container** → choose `scripts/gtm-container.json`.
+2. Workspace: *Existing (Default Workspace)*. Option: **Merge → Rename conflicting tags, triggers and variables**.
+3. Check the variable **GA4 Measurement ID** (`G-KMB66XBXLG`, the citrusarc.studio stream; Google recommends one
+   stream for a domain and its subdomains, filter by hostname in GA4). Use another `G-` ID if you prefer.
+4. **Preview** on metaads.citrusarc.studio (allow cookies, download Basic → `file_download` fires), then **Submit**.
+5. GA4 → Admin → Events: mark `purchase` as a key event.
+
+If the import is refused, create the same by hand: a *Google tag* (tag ID = the G- ID, trigger
+*Initialization – All Pages*), and three *GA4 Event* tags (`purchase` and `begin_checkout` with
+"Send Ecommerce data" from the Data Layer; `file_download`), each on a *Custom Event* trigger with the same name.
+
+## Cloudflare (OpenNext on Workers)
+
+- **Build variables** (Workers → Settings → Build → Variables and secrets). `NEXT_PUBLIC_*` values are baked
+  in at build time, so they must be here: `NEXT_PUBLIC_SITE_URL=https://metaads.citrusarc.studio`,
+  `NEXT_PUBLIC_GTM_ID=GTM-K9CKZQXK`.
+- **Runtime variables** (Workers → Settings → Variables and Secrets): everything else in `.env.example`.
+  Use *Secret* for `CHIP_API_KEY`, `MAILJET_API_SECRET`, `MAILJET_API_KEY`, `UPSTASH_REDIS_REST_TOKEN`.
+  Upstash is required on Workers (no file system for the local `.data/` fallback).
+- The paid zip is bundled into server code by `npm run build` (`prebuild` → `scripts/embed-zip.mjs`), because
+  Workers can't read `private/` from disk.
+- For "Seseorang dari Selangor" download alerts: Rules → Transform Rules → Managed Transforms → turn on
+  **Add visitor location headers**.

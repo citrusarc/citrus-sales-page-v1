@@ -37,7 +37,8 @@ ${en.faq.items.map((f) => `### ${f.q}\n${f.a}`).join("\n\n")}
 
 ## Links
 
-- [Home (Malay, with English toggle)](${SITE_URL}/)
+- [Home, Malay](${SITE_URL}/)
+- [Home, English](${SITE_URL}/en)
 - [Terms and refund policy](${SITE_URL}/terma)
 - [Privacy policy](${SITE_URL}/privasi)
 - [${STUDIO.name}](${STUDIO.url})

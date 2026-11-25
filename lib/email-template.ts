@@ -117,7 +117,7 @@ export function buyerEmail({ name, purchaseId, siteUrl, totalSen, paidAt, lang }
   const t = COPY[lang]
   const first = name.split(/\s+/)[0] ?? ""
   const hi = first ? `Hi ${first},` : "Hi,"
-  const tutorial = `${siteUrl}/#tutorial`
+  const tutorial = `${siteUrl}${lang === "en" ? "/en" : "/"}#tutorial`
   const amount = `RM${(totalSen / 100).toFixed(2)}`
   const date = new Intl.DateTimeFormat(t.locale, {
     dateStyle: "long",

@@ -52,15 +52,15 @@ export function LaunchCountdown({ variant }: { variant: "hero" | "card" }) {
   if (variant === "hero") {
     return (
       <p className="mt-5 grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-0.5 rounded-2xl border border-brand/40 bg-brand/10 px-4 py-2.5 text-sm text-white/85 sm:inline-flex sm:flex-wrap sm:rounded-full sm:py-2">
-        <Timer className="size-4 text-brand" />
+        <Timer className="size-4 text-brand-bright" />
         <strong className="font-semibold text-white">
           {t.launch.label} RM{price.priceRM}
         </strong>
-        <span className="hidden text-white/50 sm:inline">·</span>
+        <span className="hidden text-white/65 sm:inline">·</span>
         <span className="col-start-2">{raises}</span>
         {left && (
           <>
-            <span className="hidden text-white/50 sm:inline">·</span>
+            <span className="hidden text-white/65 sm:inline">·</span>
             <span className="col-start-2 font-mono tabular-nums">
               {left.d > 0 && `${left.d}${t.launch.units.d.charAt(0)} `}
               {pad(left.h)}:{pad(left.m)}:{pad(left.s)}
@@ -73,7 +73,7 @@ export function LaunchCountdown({ variant }: { variant: "hero" | "card" }) {
 
   return (
     <div className="relative mt-5 rounded-2xl border border-white/10 bg-white/5 p-4">
-      <div className="flex items-center gap-2 text-xs font-semibold tracking-[0.14em] text-brand uppercase">
+      <div className="flex items-center gap-2 text-xs font-semibold tracking-[0.14em] text-brand-bright uppercase">
         <Timer className="size-4" /> {t.launch.label} · {t.launch.endsIn}
       </div>
       <div className="mt-3 grid grid-cols-4 gap-2 text-center">
@@ -82,7 +82,7 @@ export function LaunchCountdown({ variant }: { variant: "hero" | "card" }) {
             <div className={cn("font-mono text-2xl tabular-nums", !left && "opacity-0")}>
               {left ? pad(left[k]) : "00"}
             </div>
-            <div className="text-[11px] text-white/50">{t.launch.units[k]}</div>
+            <div className="text-[11px] text-white/65">{t.launch.units[k]}</div>
           </div>
         ))}
       </div>

@@ -21,7 +21,8 @@ export function Hero() {
       <div className="grid-lines relative overflow-hidden rounded-[28px] bg-ink text-white sm:rounded-[36px]">
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-40 -bottom-60 size-160 rounded-full bg-brand/25 blur-[140px]"
+          className="pointer-events-none absolute inset-0"
+          style={{ background: "radial-gradient(60% 70% at 100% 100%, rgb(248 73 1 / 0.28), transparent 70%)" }}
         />
 
         <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 pt-32 pb-16 sm:px-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:pt-40 lg:pb-24">
@@ -32,7 +33,7 @@ export function Hero() {
             </p>
 
             <h1 className="mt-6 text-[clamp(2.6rem,6.2vw,5.5rem)] leading-[0.92] font-semibold tracking-[-0.03em] text-balance uppercase">
-              {t.hero.h1a} <span className="text-brand">{t.hero.h1b}</span> {t.hero.h1c}
+              {t.hero.h1a} <span className="text-brand-bright">{t.hero.h1b}</span> {t.hero.h1c}
             </h1>
 
             <p className="mt-7 max-w-lg text-lg leading-relaxed text-pretty text-white/65">{t.hero.sub}</p>
@@ -48,7 +49,7 @@ export function Hero() {
 
             <LaunchCountdown variant="hero" />
 
-            <p className="mt-6 flex items-center gap-2 text-sm text-white/50">
+            <p className="mt-6 flex items-center gap-2 text-sm text-white/65">
               <ShieldCheck className="size-4 text-brand" />
               {t.hero.note}
             </p>
@@ -62,7 +63,7 @@ export function Hero() {
                     <dd className="text-3xl font-semibold tracking-tight tabular-nums">
                       {c.n.toLocaleString("en-MY")}
                     </dd>
-                    <dd className="text-sm text-white/50">{c.label}</dd>
+                    <dd className="text-sm text-white/65">{c.label}</dd>
                   </div>
                 ))}
               </dl>

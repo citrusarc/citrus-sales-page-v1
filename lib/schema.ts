@@ -1,13 +1,33 @@
-// JSON-LD for search and answer engines. Server-rendered (app/page.tsx) so
-// crawlers that never run JavaScript still read it. The page's server HTML is
-// in BM, so the FAQ here is the BM one, matching what's visible.
+// JSON-LD for search and answer engines. Server-rendered with each home page
+// ("/" BM, "/en" EN) so crawlers that never run JavaScript still read it, in
+// the same language as the visible page.
 
-import { dict } from "@/lib/dict"
+import { dict, type Lang } from "@/lib/dict"
 import type { Price } from "@/lib/product"
 import { SITE_NAME, SITE_URL, STUDIO } from "@/lib/site"
 
-export function homeSchema(price: Price) {
-  const bm = dict.bm
+const PRODUCT_COPY = {
+  bm: {
+    pageName: "Meta Ads Skill untuk Claude — Citrus Arc Studio",
+    basic:
+      "Skill Claude percuma untuk owner SME Malaysia: pilih objective, tulis hook dan ads dalam BM atau English, baca result Ads Manager, semak landing page.",
+    advanced:
+      "Semua dalam Basic, tambah audit akaun penuh dari CSV Ads Manager, analisis creative, anomali & fatigue, testing & scaling, funnel Click-to-WhatsApp, compliance Malaysia (KKLIU, halal, PDPA), riset competitor dan laporan mingguan.",
+  },
+  en: {
+    pageName: "Meta Ads Skill for Claude — Citrus Arc Studio",
+    basic:
+      "Free Claude skill for Malaysian SME owners: choose the right objective, write hooks and ads in Malay or English, read Ads Manager results, check the landing page.",
+    advanced:
+      "Everything in Basic plus a full account audit from an Ads Manager CSV, creative analysis, anomaly and fatigue checks, testing and scaling, Click-to-WhatsApp funnel, Malaysian compliance (KKLIU, halal, PDPA), competitor research and weekly reports.",
+  },
+} as const
+
+export function homeSchema(price: Price, lang: Lang) {
+  const d = dict[lang]
+  const c = PRODUCT_COPY[lang]
+  const pageUrl = lang === "en" ? `${SITE_URL}/en` : `${SITE_URL}/`
+  const inLanguage = lang === "en" ? "en-MY" : "ms-MY"
   const image = `${SITE_URL}/opengraph-image.png`
   const offer = (name: string, priceRM: number, validUntil?: string | null) => ({
     "@type": "Offer",
@@ -15,7 +35,7 @@ export function homeSchema(price: Price) {
     price: priceRM.toFixed(2),
     priceCurrency: "MYR",
     availability: "https://schema.org/InStock",
-    url: `${SITE_URL}/#harga`,
+    url: `${pageUrl}#harga`,
     seller: { "@id": STUDIO.id },
     ...(validUntil ? { priceValidUntil: validUntil.slice(0, 10) } : {}),
   })
@@ -62,10 +82,10 @@ export function homeSchema(price: Price) {
       },
       {
         "@type": "WebPage",
-        "@id": `${SITE_URL}/#webpage`,
-        url: `${SITE_URL}/`,
-        name: "Meta Ads Skill untuk Claude — Citrus Arc Studio",
-        inLanguage: "ms-MY",
+        "@id": `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: c.pageName,
+        inLanguage,
         isPartOf: { "@id": `${SITE_URL}/#website` },
         about: [{ "@id": `${SITE_URL}/#basic` }, { "@id": `${SITE_URL}/#advanced` }],
         primaryImageOfPage: image,
@@ -73,20 +93,20 @@ export function homeSchema(price: Price) {
       product(
         "basic",
         "Meta Ads Basic — Claude Skill",
-        "Skill Claude percuma untuk owner SME Malaysia: pilih objective, tulis hook dan ads dalam BM atau English, baca result Ads Manager, semak landing page.",
+        c.basic,
         offer("Meta Ads Basic", 0)
       ),
       product(
         "advanced",
         "Meta Ads Advanced — Claude Skill",
-        "Semua dalam Basic, tambah audit akaun penuh dari CSV Ads Manager, analisis creative, anomali & fatigue, testing & scaling, funnel Click-to-WhatsApp, compliance Malaysia (KKLIU, halal, PDPA), riset competitor dan laporan mingguan.",
+        c.advanced,
         offer("Meta Ads Advanced", price.priceRM, price.launchEndsAt)
       ),
       {
         "@type": "FAQPage",
-        "@id": `${SITE_URL}/#faq`,
-        inLanguage: "ms-MY",
-        mainEntity: bm.faq.items.map((f) => ({
+        "@id": `${pageUrl}#faq`,
+        inLanguage,
+        mainEntity: d.faq.items.map((f) => ({
           "@type": "Question",
           name: f.q,
           acceptedAnswer: { "@type": "Answer", text: f.a },

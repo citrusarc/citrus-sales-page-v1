@@ -24,7 +24,7 @@ export function LangToggle({
       aria-label="Language"
       className={cn(
         "relative grid grid-cols-2 rounded-full p-1 text-xs font-semibold transition-colors",
-        dark ? "bg-white/10" : "bg-muted",
+        dark ? "bg-[#262626]" : "bg-muted",
         className
       )}
     >
@@ -49,7 +49,7 @@ export function LangToggle({
                 ? "text-ink"
                 : "text-white"
               : dark
-                ? "text-white/70"
+                ? "text-[#e5e5e5]"
                 : "text-muted-foreground"
           )}
         >
@@ -91,7 +91,7 @@ export function Nav() {
             "mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-full border py-2 pr-2 pl-4 transition-all duration-300 sm:pl-5",
             dark
               ? "border-transparent text-white"
-              : "border-border bg-white/85 text-ink shadow-[0_8px_30px_rgb(0_0_0/0.06)] backdrop-blur-md"
+              : "border-border bg-white/95 text-ink shadow-[0_8px_30px_rgb(0_0_0/0.06)] sm:bg-white/85 sm:backdrop-blur-md"
           )}
         >
           <a

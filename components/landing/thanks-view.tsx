@@ -11,7 +11,7 @@ import { ContactLinks } from "@/components/landing/final-cta"
 import { PillLink } from "@/components/landing/primitives"
 import type { Lang } from "@/lib/dict"
 import { analytics } from "@/lib/analytics"
-import { useLang } from "@/lib/i18n"
+import { homeHref, useLang } from "@/lib/i18n"
 
 export function ThanksView({
   state,
@@ -29,7 +29,7 @@ export function ThanksView({
   /** Paid purchase, for the GA4 purchase event. */
   order?: { id: string; valueRM: number }
 }) {
-  const { t, setLang } = useLang()
+  const { t, setLang, lang: current } = useLang()
   const router = useRouter()
 
   // Match the language of the buyer's email (and remember it for the site).
@@ -67,13 +67,14 @@ export function ThanksView({
       <div className="grid-lines relative flex flex-1 flex-col overflow-hidden rounded-[28px] bg-ink text-white sm:rounded-[36px]">
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-40 -bottom-60 size-160 rounded-full bg-brand/25 blur-[140px]"
+          className="pointer-events-none absolute inset-0"
+          style={{ background: "radial-gradient(60% 70% at 100% 100%, rgb(248 73 1 / 0.28), transparent 70%)" }}
         />
         {/* header and content share one column, so everything lines up. No
             language switch here: the page keeps the language chosen on the
             main page. */}
         <div className="relative mx-auto flex w-full max-w-2xl items-center px-5 pt-6 sm:px-8">
-          <Link href="/" className="flex items-center gap-2.5" aria-label="Citrus Arc">
+          <Link href={homeHref(current)} className="flex items-center gap-2.5" aria-label="Citrus Arc">
             <BrandLogo className="h-7 w-auto" />
             <span className="text-sm font-semibold">Meta Ads Skill</span>
           </Link>
@@ -118,7 +119,7 @@ export function ThanksView({
                 {t.thanks.download}
               </PillLink>
               <PillLink
-                href="/#tutorial"
+                href={`${homeHref(current)}#tutorial`}
                 variant="outline"
                 className="w-full text-white"
                 icon={<ArrowRight className="size-5" />}
@@ -128,7 +129,7 @@ export function ThanksView({
             </div>
           ) : (
             <Link
-              href="/"
+              href={homeHref(current)}
               className="mt-10 inline-flex items-center gap-2 self-start rounded-full border border-white/25 px-5 py-3 text-sm font-semibold transition-colors hover:border-white"
             >
               <ArrowLeft className="size-4" /> {t.thanks.back}
@@ -137,7 +138,7 @@ export function ThanksView({
 
           {state !== "pending" && (
             <div className="mt-12 border-t border-white/10 pt-6">
-              <div className="text-xs font-semibold tracking-[0.18em] text-white/50 uppercase">{t.thanks.help}</div>
+              <div className="text-xs font-semibold tracking-[0.18em] text-white/65 uppercase">{t.thanks.help}</div>
               <ContactLinks className="mt-4 flex flex-wrap gap-2 text-ink" />
             </div>
           )}

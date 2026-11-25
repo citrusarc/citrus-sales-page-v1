@@ -8,7 +8,10 @@ import { useLang } from "@/lib/i18n"
 import type { ChatScript } from "@/lib/dict"
 import { cn } from "@/lib/utils"
 
-const CHARS_PER_TICK = 3
+// Typing speed: a few chars per frame-ish tick, so the reply takes ~1.5s with
+// far fewer re-renders than one per character.
+const CHARS_PER_TICK = 6
+const TICK_MS = 28
 
 export function ChatDemo() {
   const { t, lang } = useLang()
@@ -21,12 +24,12 @@ export function ChatDemo() {
   const timer = React.useRef<ReturnType<typeof setTimeout>>(undefined)
   const onDone = React.useCallback(() => {
     if (manual) return
-    timer.current = setTimeout(() => setActive((i) => (i + 1) % chats.length), 4200)
+    timer.current = setTimeout(() => setActive((i) => (i + 1) % chats.length), 6000)
   }, [manual, chats.length])
   React.useEffect(() => () => clearTimeout(timer.current), [])
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-white/10 bg-ink-soft/90 shadow-2xl backdrop-blur">
+    <div className="overflow-hidden rounded-3xl border border-white/10 bg-ink-soft shadow-2xl">
       {/* right side left empty: the hero's tag sits over that corner */}
       <div className="flex items-center gap-3 border-b border-white/10 px-5 py-3.5 pr-32 text-xs sm:pr-36">
         <span className="flex shrink-0 items-center gap-2 font-mono whitespace-nowrap text-white/60">
@@ -34,14 +37,20 @@ export function ChatDemo() {
           {chat.advanced ? "meta-ads-advanced" : "meta-ads-basic"}
         </span>
         <span className="text-white/30">·</span>
-        <span className="truncate text-white/40">{t.hero.demoLabel}</span>
+        <span className="truncate text-white/60">{t.hero.demoLabel}</span>
       </div>
 
       {/* keyed so every new sample (or language switch) replays from scratch */}
-      <Conversation key={`${active}-${lang}`} chat={chat} typing={t.hero.typing} onDone={onDone} />
+      <Conversation
+        key={`${active}-${lang}`}
+        chat={chat}
+        typing={t.hero.typing}
+        onDone={onDone}
+        instant={active === 0 && !manual}
+      />
 
       <div className="border-t border-white/10 p-4">
-        <p className="mb-3 text-xs text-white/40">{t.hero.demoTry}</p>
+        <p className="mb-3 text-xs text-white/60">{t.hero.demoTry}</p>
         <div className="flex flex-wrap gap-2">
           {chats.map((c: ChatScript, i: number) => (
             <button
@@ -69,30 +78,42 @@ export function ChatDemo() {
   )
 }
 
-function Conversation({ chat, typing, onDone }: { chat: ChatScript; typing: string; onDone: () => void }) {
-  const [phase, setPhase] = React.useState<"user" | "typing" | "reply">("user")
-  const [shown, setShown] = React.useState(0)
+function Conversation({
+  chat,
+  typing,
+  onDone,
+  instant = false,
+}: {
+  chat: ChatScript
+  typing: string
+  onDone: () => void
+  /** Show the whole reply at once (the first sample, on page load). */
+  instant?: boolean
+}) {
+  const full = React.useMemo(() => chat.reply.join("").length, [chat])
+  const [phase, setPhase] = React.useState<"user" | "typing" | "reply">(instant ? "reply" : "user")
+  const [shown, setShown] = React.useState(instant ? full : 0)
   const scrollRef = React.useRef<HTMLDivElement>(null)
-  const total = React.useMemo(() => chat.reply.join("").length, [chat])
 
   React.useEffect(() => {
+    if (instant) return
     const a = setTimeout(() => setPhase("typing"), 500)
     const b = setTimeout(() => setPhase("reply"), 1400)
     return () => {
       clearTimeout(a)
       clearTimeout(b)
     }
-  }, [])
+  }, [instant])
 
   React.useEffect(() => {
     if (phase !== "reply") return
-    if (shown >= total) {
+    if (shown >= full) {
       onDone()
       return
     }
-    const id = setTimeout(() => setShown((s) => Math.min(total, s + CHARS_PER_TICK)), 16)
+    const id = setTimeout(() => setShown((s) => Math.min(full, s + CHARS_PER_TICK)), TICK_MS)
     return () => clearTimeout(id)
-  }, [phase, shown, total, onDone])
+  }, [phase, shown, full, onDone])
 
   React.useEffect(() => {
     const el = scrollRef.current
@@ -106,7 +127,7 @@ function Conversation({ chat, typing, onDone }: { chat: ChatScript; typing: stri
       </div>
 
       {phase === "typing" && (
-        <div className="flex items-center gap-2.5 text-xs text-white/50">
+        <div className="flex items-center gap-2.5 text-xs text-white/60">
           <Avatar />
           <span className="flex gap-1">
             {[0, 1, 2].map((i) => (
@@ -163,7 +184,7 @@ function Reply({ lines, shown }: { lines: string[]; shown: number }) {
       const [, k, v] = line.split("|").map((s) => s.trim())
       rows.push(
         <div key={i} className="grid animate-in-up grid-cols-2 border-b border-white/10 text-xs last:border-0">
-          <span className="px-3 py-2 text-white/50">{k}</span>
+          <span className="px-3 py-2 text-white/60">{k}</span>
           <span className="px-3 py-2 font-mono text-white">{v}</span>
         </div>
       )
@@ -180,7 +201,7 @@ function Reply({ lines, shown }: { lines: string[]; shown: number }) {
     } else if (line.startsWith("•")) {
       out.push(
         <p key={i} className="flex gap-2 text-sm text-white/80">
-          <span className="text-brand">•</span>
+          <span className="text-brand-bright">•</span>
           {text.slice(1).trim()}
         </p>
       )

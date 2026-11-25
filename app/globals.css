@@ -12,6 +12,8 @@
 
   /* Citrus Arc brand */
   --color-brand: var(--brand);
+  --color-brand-bright: var(--brand-bright);
+  --color-brand-ink: var(--brand-ink);
   --color-brand-deep: var(--brand-deep);
   --color-peach: var(--peach);
   --color-ink: var(--ink);
@@ -51,7 +53,13 @@
 }
 
 :root {
-  --brand: #f84901;
+  /* Citrus Arc orange in three strengths (WCAG AA):
+     brand        fills behind white text (4.5:1 with white)
+     brand-bright the citrusarc.studio orange: large text, icons, on dark
+     brand-ink    small orange text on the light background (4.7:1) */
+  --brand: #d84000;
+  --brand-bright: #f84901;
+  --brand-ink: #c93a00;
   --brand-deep: #9d2f02;
   --peach: #ffd6a8;
   --ink: #0a0a0a;

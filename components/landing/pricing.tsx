@@ -50,16 +50,17 @@ export function Pricing() {
         <div className="grid-lines relative flex flex-col overflow-hidden rounded-[28px] bg-ink p-8 text-white sm:p-10">
           <div
             aria-hidden
-            className="pointer-events-none absolute -top-40 -right-40 size-120 rounded-full bg-brand/35 blur-[120px]"
+            className="pointer-events-none absolute inset-0"
+            style={{ background: "radial-gradient(70% 60% at 100% 0%, rgb(248 73 1 / 0.38), transparent 70%)" }}
           />
           <span className="absolute top-7 right-7 rotate-6 rounded-full bg-white px-4 py-2 text-xs font-bold tracking-wider text-ink uppercase shadow-lg">
             {a.tag}
           </span>
-          <div className="relative text-xs font-semibold tracking-[0.18em] text-brand uppercase">(02) Advanced</div>
+          <div className="relative text-xs font-semibold tracking-[0.18em] text-brand-bright uppercase">(02) Advanced</div>
           <h3 className="relative mt-4 text-2xl font-semibold tracking-tight uppercase">{a.name}</h3>
           <p className="relative mt-1 text-white/60">{a.desc}</p>
           <div className="relative mt-8 flex items-baseline gap-3">
-            <span className="text-6xl font-semibold tracking-tight text-brand">{a.price.replace("{price}", priceLabel)}</span>
+            <span className="text-6xl font-semibold tracking-tight text-brand-bright">{a.price.replace("{price}", priceLabel)}</span>
             <span className="text-white/60">{a.per}</span>
           </div>
           <LaunchCountdown variant="card" />
@@ -80,7 +81,7 @@ export function Pricing() {
           <Pill onClick={openBuy} className="relative mt-10 w-full">
             {a.cta.replace("{price}", priceLabel)}
           </Pill>
-          <p className="relative mt-4 flex items-center justify-center gap-2 text-xs text-white/50">
+          <p className="relative mt-4 flex items-center justify-center gap-2 text-xs text-white/65">
             <CreditCard className="size-4" /> {t.pricing.pay}
           </p>
         </div>

@@ -8,7 +8,7 @@ import { BrandLogo } from "@/components/landing/brand-logo"
 import { Footer } from "@/components/landing/final-cta"
 import { LangToggle } from "@/components/landing/nav"
 import { Eyebrow, Rich } from "@/components/landing/primitives"
-import { useLang } from "@/lib/i18n"
+import { homeHref, useLang } from "@/lib/i18n"
 import { LEGAL, LEGAL_UPDATED } from "@/lib/legal"
 
 const UI = {
@@ -27,7 +27,7 @@ export function LegalView({ kind }: { kind: "terms" | "privacy" }) {
   return (
     <>
       <header className="mx-auto flex max-w-5xl items-center justify-between px-5 pt-6 sm:px-10">
-        <Link href="/" className="flex items-center gap-2.5" aria-label="Citrus Arc">
+        <Link href={homeHref(lang)} className="flex items-center gap-2.5" aria-label="Citrus Arc">
           <BrandLogo className="h-7 w-auto" />
           <span className="text-sm font-semibold">Meta Ads Skill</span>
         </Link>
@@ -36,7 +36,7 @@ export function LegalView({ kind }: { kind: "terms" | "privacy" }) {
 
       <main className="mx-auto max-w-5xl px-5 pt-14 pb-10 sm:px-10">
         <Link
-          href="/"
+          href={homeHref(lang)}
           className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-ink"
         >
           <ArrowLeft className="size-4" /> {ui.back}
@@ -57,7 +57,7 @@ export function LegalView({ kind }: { kind: "terms" | "privacy" }) {
             <ol className="mt-4 space-y-2 text-sm">
               {doc.sections.map((s, i) => (
                 <li key={s.id}>
-                  <a href={`#${s.id}`} className="flex gap-2 text-muted-foreground transition-colors hover:text-brand">
+                  <a href={`#${s.id}`} className="flex gap-2 text-muted-foreground transition-colors hover:text-brand-ink">
                     <span className="font-mono text-xs leading-5">{String(i + 1).padStart(2, "0")}</span>
                     {s.heading}
                   </a>
@@ -70,7 +70,7 @@ export function LegalView({ kind }: { kind: "terms" | "privacy" }) {
             {doc.sections.map((s, i) => (
               <section key={s.id} id={s.id} className="scroll-mt-8">
                 <h2 className="flex items-baseline gap-3 text-xl font-semibold tracking-tight uppercase">
-                  <span className="font-mono text-sm text-brand">({String(i + 1).padStart(2, "0")})</span>
+                  <span className="font-mono text-sm text-brand-ink">({String(i + 1).padStart(2, "0")})</span>
                   {s.heading}
                 </h2>
                 <div className="mt-4 space-y-4 leading-relaxed text-ink/80">

@@ -96,7 +96,7 @@ export function Tutorial() {
                 <div className={cn("flex items-center gap-3 px-4 py-3 transition-colors", step === i && "bg-accent")}>
                   <button
                     onClick={() => toggle(i)}
-                    aria-label={st.title}
+                    aria-label={`${i + 1}: ${st.title}`}
                     aria-pressed={isDone}
                     className={cn(
                       "grid size-8 shrink-0 place-items-center rounded-full border font-mono text-xs transition-colors",
@@ -123,7 +123,7 @@ export function Tutorial() {
         <div ref={panelRef} className="overflow-hidden rounded-3xl border border-border bg-surface">
           <div key={`${tab}-${step}`} className="grid animate-in-up gap-8 p-6 sm:p-10 md:grid-cols-[1fr_1.1fr] md:items-center">
             <div>
-              <span className="font-mono text-sm text-brand">
+              <span className="font-mono text-sm text-brand-ink">
                 ({String(step + 1).padStart(2, "0")}/{String(steps.length).padStart(2, "0")})
               </span>
               <h3 className="mt-3 text-3xl leading-none font-semibold tracking-tight uppercase">{s.title}</h3>
@@ -228,7 +228,7 @@ function TerminalMock({ cmd, isPrompt }: { cmd: string; isPrompt: boolean }) {
         </button>
       </div>
       <pre className="overflow-x-auto p-5 font-mono text-sm leading-relaxed whitespace-pre-wrap">
-        <span className="text-brand">{isPrompt ? "> " : "$ "}</span>
+        <span className="text-brand-bright">{isPrompt ? "> " : "$ "}</span>
         {cmd}
         <span className="ml-0.5 inline-block h-4 w-2 animate-blink bg-brand align-middle" />
       </pre>

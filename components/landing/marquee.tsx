@@ -17,7 +17,7 @@ export function Marquee() {
         {items.map((x, i) => (
           <span
             key={i}
-            className="flex items-center gap-10 text-sm font-semibold tracking-[0.18em] whitespace-nowrap text-muted-foreground uppercase"
+            className="flex items-center gap-10 text-sm font-semibold tracking-[0.18em] whitespace-nowrap text-ink/70 uppercase"
           >
             {x}
             <span className="size-1.5 rounded-full bg-brand" />

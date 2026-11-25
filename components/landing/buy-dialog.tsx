@@ -66,7 +66,7 @@ export function BuyDialog({ open, onClose }: { open: boolean; onClose: () => voi
           <X className="size-5" />
         </button>
 
-        <span className="text-xs font-semibold tracking-[0.18em] text-brand uppercase">
+        <span className="text-xs font-semibold tracking-[0.18em] text-brand-ink uppercase">
           Meta Ads Advanced · {priceLabel}
         </span>
         <h3 className="mt-3 text-3xl leading-none font-semibold tracking-tight uppercase">{t.buy.title}</h3>

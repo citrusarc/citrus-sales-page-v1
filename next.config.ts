@@ -1,13 +1,8 @@
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  // The paid zip lives outside /public so it can only be served (or emailed)
-  // after a CHIP payment is verified. Make sure it ships with those routes.
-  outputFileTracingIncludes: {
-    "/api/download/advanced": ["./private/**/*"],
-    "/terima-kasih": ["./private/**/*"],
-    "/api/chip/callback": ["./private/**/*"],
-  },
+  // The paid zip (private/) is bundled into server code at build time by
+  // scripts/embed-zip.mjs, so it works on Cloudflare Workers too.
 }
 
 export default nextConfig

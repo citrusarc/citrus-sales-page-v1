@@ -4,6 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "prebuild": "node scripts/embed-zip.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

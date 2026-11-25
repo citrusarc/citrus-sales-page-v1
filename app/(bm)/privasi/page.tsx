@@ -6,6 +6,8 @@ import { LEGAL } from "@/lib/legal"
 export const metadata: Metadata = {
   title: `${LEGAL.privacy.bm.title} — Meta Ads Skill · Citrus Arc`,
   description: LEGAL.privacy.bm.description,
+  alternates: { canonical: "/privasi" },
+  openGraph: { url: "/privasi" },
 }
 
 export default function PrivacyPage() {
