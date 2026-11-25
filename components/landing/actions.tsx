@@ -6,6 +6,7 @@ import { CheckCircle2, Info, X } from "lucide-react"
 import { BuyDialog } from "@/components/landing/buy-dialog"
 import { confetti } from "@/components/landing/confetti"
 import { FailedDialog } from "@/components/landing/failed-dialog"
+import { analytics } from "@/lib/analytics"
 import { useLang } from "@/lib/i18n"
 import type { RecentEvent } from "@/app/api/stats/route"
 import { BASIC, PRICING, type Price } from "@/lib/product"
@@ -98,6 +99,7 @@ export function ActionsProvider({ children, price: initialPrice }: { children: R
       document.body.appendChild(a)
       a.click()
       a.remove()
+      analytics.downloadBasic()
       // Counted once per browser by the server (see /api/stats/download).
       fetch("/api/stats/download", { method: "POST", keepalive: true }).catch(() => {})
       toast(t.pricing.downloaded)

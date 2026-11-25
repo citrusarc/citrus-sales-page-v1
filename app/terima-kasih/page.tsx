@@ -47,5 +47,16 @@ export default async function ThanksPage({ searchParams }: PageProps<"/terima-ka
   // wasn't recorded, the page keeps the language saved in this browser.
   const lang = (purchase && (await storedLang(purchase.id))) || undefined
 
-  return <ThanksView state={state} lang={lang} email={paid && emailed ? (purchase?.client?.email ?? null) : null} emailFailed={paid && !emailed} />
+  // For the GA4 purchase event (sent once per purchase by the page).
+  const order = paid && purchase ? { id: purchase.id, valueRM: (purchase.purchase?.total ?? 0) / 100 } : undefined
+
+  return (
+    <ThanksView
+      state={state}
+      lang={lang}
+      order={order}
+      email={paid && emailed ? (purchase?.client?.email ?? null) : null}
+      emailFailed={paid && !emailed}
+    />
+  )
 }

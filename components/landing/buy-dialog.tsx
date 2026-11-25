@@ -6,13 +6,14 @@ import { ArrowRight, Loader2, Lock, X } from "lucide-react"
 import { Pill, Rich } from "@/components/landing/primitives"
 import { useLang } from "@/lib/i18n"
 import { useActions } from "@/components/landing/actions"
+import { analytics } from "@/lib/analytics"
 
 const input =
   "mt-2 w-full rounded-xl border border-input bg-canvas px-4 py-3 text-base outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-ink focus:bg-white"
 
 export function BuyDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { t, lang } = useLang()
-  const { priceLabel } = useActions()
+  const { price, priceLabel } = useActions()
   const ref = React.useRef<HTMLDialogElement>(null)
   const [loading, setLoading] = React.useState(false)
   const [error, setError] = React.useState("")
@@ -29,6 +30,7 @@ export function BuyDialog({ open, onClose }: { open: boolean; onClose: () => voi
     const fd = new FormData(e.currentTarget)
     setLoading(true)
     setError("")
+    analytics.beginCheckout(price.priceRM)
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",

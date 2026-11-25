@@ -10,6 +10,7 @@ import { confetti } from "@/components/landing/confetti"
 import { ContactLinks } from "@/components/landing/final-cta"
 import { PillLink } from "@/components/landing/primitives"
 import type { Lang } from "@/lib/dict"
+import { analytics } from "@/lib/analytics"
 import { useLang } from "@/lib/i18n"
 
 export function ThanksView({
@@ -17,6 +18,7 @@ export function ThanksView({
   lang,
   email = null,
   emailFailed = false,
+  order,
 }: {
   state: "paid" | "pending" | "missing"
   /** The language the buyer paid in; the page switches to it. */
@@ -24,6 +26,8 @@ export function ThanksView({
   /** Set when the skill file was emailed to the buyer. */
   email?: string | null
   emailFailed?: boolean
+  /** Paid purchase, for the GA4 purchase event. */
+  order?: { id: string; valueRM: number }
 }) {
   const { t, setLang } = useLang()
   const router = useRouter()
@@ -34,6 +38,16 @@ export function ThanksView({
   }, [lang, setLang])
 
   React.useEffect(() => {
+    if (state === "paid" && order) {
+      // Once per purchase, even if the page is refreshed.
+      const key = `ca-tracked-${order.id}`
+      let seen = false
+      try {
+        seen = localStorage.getItem(key) === "1"
+        localStorage.setItem(key, "1")
+      } catch {}
+      if (!seen) analytics.purchase(order.id, order.valueRM)
+    }
     if (state === "paid") {
       const id = setTimeout(() => confetti({ x: window.innerWidth / 2, y: window.innerHeight / 3 }), 300)
       return () => clearTimeout(id)
@@ -42,7 +56,7 @@ export function ThanksView({
       const id = setInterval(() => router.refresh(), 4000)
       return () => clearInterval(id)
     }
-  }, [state, router])
+  }, [state, router, order])
 
   const Icon = state === "paid" ? PartyPopper : state === "pending" ? Hourglass : SearchX
   const title = state === "paid" ? t.thanks.paidTitle : state === "pending" ? t.thanks.pendingTitle : t.thanks.missingTitle

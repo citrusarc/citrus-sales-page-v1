@@ -352,6 +352,19 @@ const bm = {
       close: "Tutup",
     },
   },
+  banner: {
+    text: "Harga pelancaran: Meta Ads Advanced {price} — naik ke {regular} selepas {date}.",
+    short: "Harga pelancaran {price} hingga {date}.",
+    cta: "Dapatkan sekarang",
+    close: "Tutup pengumuman",
+  },
+  cookies: {
+    label: "Notis kuki",
+    message: "Kami menggunakan kuki Google Analytics untuk melihat cara laman web ini digunakan. Kuki ini tidak aktif melainkan anda membenarkannya.",
+    privacyLink: "[Polisi Privasi](/privasi)",
+    accept: "Benarkan",
+    decline: "Tidak, terima kasih",
+  },
   launch: {
     label: "Harga pelancaran",
     raises: "Naik ke {regular} selepas {date}",
@@ -463,6 +476,10 @@ const bm = {
     eyebrow: "Soalan lazim",
     title: "Ada soalan?",
     items: [
+      {
+        q: "Apa itu Meta Ads Skill untuk Claude?",
+        a: "Meta Ads Skill ialah skill untuk Claude (AI oleh Anthropic) yang dibina oleh Citrus Arc Studio di Cyberjaya untuk owner SME Malaysia. Ia mengajar Claude cara merancang, menulis dan menilai iklan Facebook dan Instagram dalam BM atau English: pilih objective, tulis hook, baca result Ads Manager dan, dalam versi Advanced, audit akaun penuh dari CSV export. Meta Ads Basic percuma; Meta Ads Advanced dibayar sekali.",
+      },
       {
         q: "Apa sebenarnya ‘Claude Skill’?",
         a: "Skill ialah folder arahan + fail rujukan (dan skrip) yang Claude baca bila soalan anda berkaitan. Bila dipasang, Claude ikut cara kerja yang sama setiap kali — macam ada ads manager berpengalaman dalam chat.",
@@ -866,6 +883,19 @@ const en: Dict = {
       close: "Close",
     },
   },
+  banner: {
+    text: "Launch price: Meta Ads Advanced {price} — goes up to {regular} after {date}.",
+    short: "Launch price {price} until {date}.",
+    cta: "Get it now",
+    close: "Dismiss announcement",
+  },
+  cookies: {
+    label: "Cookie notice",
+    message: "We use Google Analytics cookies to see how this website is used. They stay off unless you allow them.",
+    privacyLink: "[Privacy Policy](/privasi)",
+    accept: "Allow",
+    decline: "No, thanks",
+  },
   launch: {
     label: "Launch price",
     raises: "Goes up to {regular} after {date}",
@@ -977,6 +1007,10 @@ const en: Dict = {
     eyebrow: "FAQ",
     title: "Questions?",
     items: [
+      {
+        q: "What is the Meta Ads Skill for Claude?",
+        a: "The Meta Ads Skill is a skill for Claude (Anthropic's AI) built by Citrus Arc Studio in Cyberjaya for Malaysian SME owners. It teaches Claude to plan, write and assess Facebook and Instagram ads in Malay or English: choose the objective, write hooks, read Ads Manager results and, in the Advanced version, run a full account audit from a CSV export. Meta Ads Basic is free; Meta Ads Advanced is a one-time payment.",
+      },
       {
         q: "What exactly is a ‘Claude Skill’?",
         a: "A skill is a folder of instructions + reference files (and scripts) that Claude reads when your question is relevant. Once installed, Claude follows the same playbook every time — like having an experienced ads manager in the chat.",

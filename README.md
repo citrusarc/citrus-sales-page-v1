@@ -85,3 +85,17 @@ page re-renders every 5 minutes; an open tab switches itself). Set `launch` to `
 Bottom-right alerts show real events only: paid Advanced purchases (masked name) and Basic downloads
 ("Seseorang dari Selangor download Meta Ads Basic"). The state comes from the host's geo headers
 (Vercel or Cloudflare with visitor location headers on); without them it just says "Seseorang".
+
+## SEO, AEO, GEO and analytics
+
+- **Metadata** (`app/layout.tsx`): title, description, canonical, Open Graph and Twitter cards. Needs
+  `NEXT_PUBLIC_SITE_URL` in production for absolute URLs.
+- **Structured data** (`lib/schema.ts`, rendered in `app/page.tsx`): Organization (same `@id` as
+  citrusarc.studio), WebSite, WebPage, two Products with real Offers (Advanced at today's price, valid until
+  the launch deadline) and the FAQ.
+- **Crawlers**: `/robots.txt` names the AI answer-engine bots (as on citrusarc.studio) and keeps `/api/` and
+  `/terima-kasih` out; `/sitemap.xml`; `/llms.txt` (plain-English summary for AI assistants, price at request time).
+- **Analytics**: Google Tag Manager `NEXT_PUBLIC_GTM_ID` (default GTM-K9CKZQXK), production builds only, with
+  Consent Mode (analytics cookies only after "Benarkan" in the cookie notice; ads storage always denied).
+  dataLayer events for GTM triggers: `file_download` (Basic), `begin_checkout`, `purchase` (once per purchase,
+  GA4 ecommerce format with `transaction_id`, `value`, `currency: MYR`).
