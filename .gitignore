@@ -37,3 +37,8 @@ pnpm-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+!.env.example
+
+# local sent-email log (lib/sent-log.ts)
+/.data/
