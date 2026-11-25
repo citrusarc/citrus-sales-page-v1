@@ -3,7 +3,7 @@
 import * as React from "react"
 import { ArrowRight, Loader2, Lock, X } from "lucide-react"
 
-import { Pill } from "@/components/landing/primitives"
+import { Pill, Rich } from "@/components/landing/primitives"
 import { useLang } from "@/lib/i18n"
 import { ADVANCED } from "@/lib/product"
 
@@ -103,6 +103,9 @@ export function BuyDialog({ open, onClose }: { open: boolean; onClose: () => voi
           >
             {loading ? t.buy.loading : t.buy.submit}
           </Pill>
+          <p className="text-center text-xs leading-relaxed text-muted-foreground">
+            <Rich text={t.buy.agree} />
+          </p>
           <p className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
             <Lock className="size-3.5" /> {t.buy.secure}
           </p>

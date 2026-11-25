@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { ArrowRight, Sparkles } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -144,5 +145,29 @@ export function CountUp({ to, className }: { to: number; className?: string }) {
     <span ref={ref} className={className}>
       {n}
     </span>
+  )
+}
+
+/** Renders [text](url) links inside a plain string. */
+export function Rich({ text }: { text: string }) {
+  const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g)
+  return (
+    <>
+      {parts.map((p, i) => {
+        const m = p.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
+        if (!m) return <React.Fragment key={i}>{p}</React.Fragment>
+        const [, label, href] = m
+        const cls = "font-medium text-brand underline decoration-brand/30 underline-offset-2 hover:decoration-brand"
+        return href.startsWith("/") ? (
+          <Link key={i} href={href} className={cls}>
+            {label}
+          </Link>
+        ) : (
+          <a key={i} href={href} className={cls} {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+            {label}
+          </a>
+        )
+      })}
+    </>
   )
 }

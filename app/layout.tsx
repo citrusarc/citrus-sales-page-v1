@@ -11,6 +11,8 @@ const sans = Geist({ subsets: ["latin"], variable: "--font-sans" })
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
 
 export const metadata: Metadata = {
+  // Absolute URLs for the share image. Set NEXT_PUBLIC_SITE_URL in production.
+  ...(process.env.NEXT_PUBLIC_SITE_URL ? { metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL) } : {}),
   title: "Meta Ads Skill untuk Claude — Citrus Arc",
   description:
     "Ajar Claude jadi pakar Facebook & Instagram Ads untuk bisnes anda. Skill Basic percuma, Advanced untuk audit akaun, creative, testing, WhatsApp funnel & compliance Malaysia.",
@@ -19,7 +21,9 @@ export const metadata: Metadata = {
     description: `Skill Claude untuk owner SME Malaysia. Basic percuma, Advanced RM${ADVANCED.priceRM}.`,
     locale: "ms_MY",
     type: "website",
+    siteName: "Citrus Arc Studio",
   },
+  twitter: { card: "summary_large_image" },
 }
 
 export default function RootLayout({

@@ -369,6 +369,7 @@ const bm = {
       generic: "Ada masalah sambungan. Cuba lagi.",
     },
     close: "Tutup",
+    agree: "Dengan meneruskan, anda bersetuju dengan [Terma](/terma) dan [polisi bayaran balik](/terma#bayaran-balik) kami.",
     showName: "Nama anda (disamarkan, cth. Ah***d) mungkin dipaparkan dalam notifikasi pembelian di laman ini. Biarkan nama kosong jika tak mahu.",
   },
   alerts: {
@@ -487,6 +488,10 @@ const bm = {
         a: "WhatsApp kami di +60 11-5995 6435 atau emel hello@citrusarc.studio, sertakan emel yang anda guna semasa bayar. Kami bantu secepat mungkin.",
       },
       {
+        q: "Boleh minta bayaran balik?",
+        a: "Ia produk digital yang dihantar serta-merta, jadi jualan muktamad — kecuali anda tak terima fail, dicaj dua kali, atau fail rosak dan kami tak dapat membaikinya. Butiran penuh dalam polisi bayaran balik di halaman Terma.",
+      },
+      {
         q: "Ni produk rasmi Meta?",
         a: "Bukan. Skill ini dibina oleh Citrus Arc Studio dan tidak bersekutu dengan atau disokong oleh Meta Platforms, Inc.",
       },
@@ -499,6 +504,9 @@ const bm = {
   footer: {
     by: "Dibina oleh Citrus Arc Studio",
     contact: "Hubungi kami",
+    terms: "Terma & Syarat",
+    privacy: "Polisi Privasi",
+    refund: "Bayaran balik",
     legal:
       "Tidak bersekutu dengan atau disokong oleh Meta Platforms, Inc. Facebook, Instagram, WhatsApp dan Meta adalah tanda dagangan Meta Platforms, Inc. Claude ialah produk Anthropic. Panduan am sahaja — bukan nasihat undang-undang atau kewangan.",
   },
@@ -868,6 +876,7 @@ const en: Dict = {
       generic: "Connection problem. Please try again.",
     },
     close: "Close",
+    agree: "By continuing, you agree to our [Terms](/terma) and [refund policy](/terma#bayaran-balik).",
     showName: "Your name (masked, e.g. Ah***d) may appear in purchase notifications on this page. Leave the name blank if you'd rather not.",
   },
   alerts: {
@@ -986,6 +995,10 @@ const en: Dict = {
         a: "WhatsApp us at +60 11-5995 6435 or email hello@citrusarc.studio with the email you paid with. We'll sort it out quickly.",
       },
       {
+        q: "Can I get a refund?",
+        a: "It's a digital product delivered instantly, so sales are final — unless you didn't receive the file, were charged twice, or the file is broken and we can't fix it. Full details are in the refund policy on the Terms page.",
+      },
+      {
         q: "Is this an official Meta product?",
         a: "No. This skill is built by Citrus Arc Studio and is not affiliated with or endorsed by Meta Platforms, Inc.",
       },
@@ -998,6 +1011,9 @@ const en: Dict = {
   footer: {
     by: "Built by Citrus Arc Studio",
     contact: "Contact us",
+    terms: "Terms & Conditions",
+    privacy: "Privacy Policy",
+    refund: "Refunds",
     legal:
       "Not affiliated with or endorsed by Meta Platforms, Inc. Facebook, Instagram, WhatsApp and Meta are trademarks of Meta Platforms, Inc. Claude is a product of Anthropic. General guidance only — not legal or financial advice.",
   },

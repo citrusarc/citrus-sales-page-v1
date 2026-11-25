@@ -1,11 +1,13 @@
 "use client"
 
+import Link from "next/link"
 import { AtSign, Download, Mail, MessageCircle } from "lucide-react"
 
 import { useActions } from "@/components/landing/actions"
 import { BrandLogo } from "@/components/landing/brand-logo"
 import { Pill } from "@/components/landing/primitives"
 import { useLang } from "@/lib/i18n"
+import { COMPANY } from "@/lib/legal"
 import { CONTACT } from "@/lib/product"
 
 export function FinalCta() {
@@ -69,8 +71,19 @@ export function Footer() {
             <span className="font-semibold tracking-tight">Citrus Arc Studio</span>
           </a>
           <p className="mt-3 text-sm text-muted-foreground">
-            {t.footer.by} · © {new Date().getFullYear()}
+            {t.footer.by} · SSM {COMPANY.registration} · © {new Date().getFullYear()}
           </p>
+          <nav aria-label="Legal" className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium">
+            <Link href="/terma" className="transition-colors hover:text-brand">
+              {t.footer.terms}
+            </Link>
+            <Link href="/privasi" className="transition-colors hover:text-brand">
+              {t.footer.privacy}
+            </Link>
+            <Link href="/terma#bayaran-balik" className="transition-colors hover:text-brand">
+              {t.footer.refund}
+            </Link>
+          </nav>
         </div>
         <div>
           <div className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">{t.footer.contact}</div>

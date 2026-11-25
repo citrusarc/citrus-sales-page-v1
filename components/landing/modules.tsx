@@ -57,7 +57,11 @@ export function Modules() {
           {(["basic", "advanced"] as const).map((k) => (
             <button
               key={k}
-              onClick={() => setTier(k)}
+              onClick={() => {
+                setTier(k)
+                // Basic can't show an Advanced-only module: go back to the first one.
+                if (k === "basic" && items[sel].tier === "advanced") setSel(0)
+              }}
               aria-pressed={tier === k}
               className={cn(
                 "relative z-10 px-8 py-3 text-sm transition-colors sm:px-12",
@@ -80,13 +84,15 @@ export function Modules() {
               <button
                 key={it.n}
                 onClick={() => setSel(i)}
+                disabled={locked}
                 aria-pressed={active}
                 className={cn(
                   "group flex min-h-40 flex-col justify-between gap-4 rounded-2xl border p-5 text-left transition-all duration-200",
                   active
                     ? "border-ink bg-ink text-white"
-                    : "border-border bg-surface hover:-translate-y-0.5 hover:border-ink",
-                  locked && !active && "bg-transparent opacity-45"
+                    : locked
+                      ? "cursor-not-allowed border-border bg-transparent opacity-45"
+                      : "border-border bg-surface hover:-translate-y-0.5 hover:border-ink"
                 )}
               >
                 <div className="flex items-start justify-between">

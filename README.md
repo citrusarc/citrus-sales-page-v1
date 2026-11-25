@@ -65,3 +65,11 @@ All from real data in the same store (`lib/kv.ts`), nothing invented:
 - **Purchase alerts** (bottom-right) show the last real purchases from the past 30 days. A masked name
   (`lib/mask.ts`, e.g. "Nur Sy***an") appears only if the buyer ticked the opt-in box at checkout
   (PDPA); otherwise it says "Seseorang". No sales, no alerts.
+
+## Legal pages and share image
+
+- `/terma` (terms, licence, refund policy at `/terma#bayaran-balik`) and `/privasi` (PDPA notice), BM and EN.
+  Content lives in `lib/legal.ts`; bump `LEGAL_UPDATED` when you change it. Linked from the footer, the FAQ
+  and the buy form.
+- `app/opengraph-image.png` / `app/twitter-image.png` is the link preview for WhatsApp, Facebook and X. The
+  price is baked in: if it changes, edit `scripts/share-image.html`, screenshot it at 1200×630 and save over both.
