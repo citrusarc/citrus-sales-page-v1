@@ -1,5 +1,7 @@
 // Server-side only. Same Mailjet setup as citrus-class-v1.
 
+import { env } from "@/lib/env"
+
 export type EmailMessage = {
   to: { email: string; name?: string }
   subject: string
@@ -30,8 +32,8 @@ export async function sendEmail(message: EmailMessage) {
       Messages: [
         {
           From: {
-            Email: process.env.MAIL_FROM || "noreply@citrusarc.studio",
-            Name: process.env.MAIL_FROM_NAME || "Citrus Arc Studio",
+            Email: env.mailFrom(),
+            Name: env.mailFromName(),
           },
           To: [{ Email: message.to.email, Name: message.to.name }],
           ...(message.replyTo ? { ReplyTo: { Email: message.replyTo } } : {}),

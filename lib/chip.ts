@@ -1,9 +1,10 @@
 // Server-side only: uses CHIP_API_KEY. Import from route handlers and
 // server components, never from a "use client" file.
+import { env } from "@/lib/env"
 import { ADVANCED, currentPrice } from "@/lib/product"
 
 // Same variable names as citrus-class-v1, so the keys can be shared.
-const API = (process.env.CHIP_API_URL || "https://gate.chip-in.asia/api/v1").replace(/\/$/, "")
+const API = env.chipApiUrl()
 
 export type ChipPurchase = {
   id: string
@@ -18,12 +19,12 @@ export type ChipPurchase = {
 }
 
 export function chipConfigured() {
-  return Boolean(process.env.CHIP_API_KEY && process.env.CHIP_BRAND_ID)
+  return Boolean(env.chipApiKey() && env.chipBrandId())
 }
 
 function headers() {
   return {
-    Authorization: `Bearer ${process.env.CHIP_API_KEY}`,
+    Authorization: `Bearer ${env.chipApiKey()}`,
     "Content-Type": "application/json",
   }
 }
@@ -42,7 +43,7 @@ export async function createAdvancedPurchase(input: {
     headers: headers(),
     cache: "no-store",
     body: JSON.stringify({
-      brand_id: process.env.CHIP_BRAND_ID,
+      brand_id: env.chipBrandId(),
       reference: ADVANCED.reference,
       // We email the skill file ourselves (lib/deliver.ts), so no CHIP receipt.
       send_receipt: false,
@@ -84,7 +85,7 @@ export function isPaidAdvanced(p: ChipPurchase | null): boolean {
   return Boolean(
     p &&
       p.status === "paid" &&
-      p.brand_id === process.env.CHIP_BRAND_ID &&
+      p.brand_id === env.chipBrandId() &&
       p.reference === ADVANCED.reference
   )
 }

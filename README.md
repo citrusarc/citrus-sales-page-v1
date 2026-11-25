@@ -109,13 +109,14 @@ Bottom-right alerts show real events only: paid Advanced purchases (masked name)
 3. Check the variable **GA4 Measurement ID** is `G-MSGBN47GK4` (GA4 property *citrus-sales-page-v1*, web stream
    https://metaads.citrusarc.studio). Don't also paste GA4's own gtag snippet into the site: GTM loads GA4, and
    both together would count every visit twice.
-4. **Preview** on metaads.citrusarc.studio (allow cookies; the Google tag fires on load), then **Submit**.
-   Basic downloads are recorded by GA4 enhanced measurement as `file_download`, so there is no separate tag for it.
+4. **Preview** on metaads.citrusarc.studio (allow cookies, download Basic → `file_download` fires), then **Submit**.
+   In GA4 → Data streams → Enhanced measurement, turn **File downloads** off, so Basic downloads count once
+   (the GTM tag records them).
 5. GA4 → Admin → Events: mark `purchase` as a key event.
 
 If the import is refused, create the same by hand: a *Google tag* (tag ID = the G- ID, trigger
-*Initialization – All Pages*), and two *GA4 Event* tags (`purchase` and `begin_checkout`, with
-"Send Ecommerce data" from the Data Layer), each on a *Custom Event* trigger with the same name.
+*Initialization – All Pages*), and three *GA4 Event* tags (`purchase` and `begin_checkout` with "Send Ecommerce data" from the
+Data Layer, and `file_download`), each on a *Custom Event* trigger with the same name.
 Only one of GTM-PNTNNW3W (Tag Manager) or GTM-K9CKZQXK (GA4's own Google tag) may be on the site, or visits count twice.
 
 ## Cloudflare (OpenNext on Workers)
@@ -123,9 +124,10 @@ Only one of GTM-PNTNNW3W (Tag Manager) or GTM-K9CKZQXK (GA4's own Google tag) ma
 - **Build variables** (Workers → Settings → Build → Variables and secrets). `NEXT_PUBLIC_*` values are baked
   in at build time, so they must be here: `NEXT_PUBLIC_SITE_URL=https://metaads.citrusarc.studio`,
   `NEXT_PUBLIC_GTM_ID=GTM-PNTNNW3W`.
-- **Runtime variables** (Workers → Settings → Variables and Secrets): everything else in `.env.example`.
-  Use *Secret* for `CHIP_API_KEY`, `MAILJET_API_SECRET`, `MAILJET_API_KEY`, `UPSTASH_REDIS_REST_TOKEN`.
-  Upstash is required on Workers (no file system for the local `.data/` fallback).
+- **Secrets** (Workers → Settings → Variables and Secrets, type *Secret*): `CHIP_API_KEY`, `MAILJET_API_KEY`,
+  `MAILJET_API_SECRET`, `UPSTASH_REDIS_REST_TOKEN`. Git deploys keep Secrets but **drop plain Variables**, so
+  non-secret settings (CHIP brand ID, Upstash URL, sender, admin email) have built-in defaults in `lib/env.ts`.
+  Check `/api/health` after a deploy.
 - The paid zip is bundled into server code by `npm run build` (`prebuild` → `scripts/embed-zip.mjs`), because
   Workers can't read `private/` from disk.
 - For "Seseorang dari Selangor" download alerts: Rules → Transform Rules → Managed Transforms → turn on

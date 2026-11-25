@@ -1,6 +1,7 @@
 // Server-side only. Emails the paid skill to the buyer, once per purchase.
 
 import { advancedZipBase64 } from "@/lib/advanced-zip"
+import { env } from "@/lib/env"
 import { isPaidAdvanced, type ChipPurchase } from "@/lib/chip"
 import { addToSet, getValue, KEY, pushCapped, setSize } from "@/lib/kv"
 import { emailConfigured, sendEmail } from "@/lib/mailjet"
@@ -74,7 +75,7 @@ export async function deliverAdvanced(purchase: ChipPurchase | null, siteUrl: st
   }
 
   // Heads-up to the studio. Never affects the buyer's result.
-  const admin = process.env.ADMIN_EMAIL
+  const admin = env.adminEmail()
   if (admin) {
     const msg = saleEmail({ buyerName: name, buyerEmail: email, purchaseId: purchase.id, totalSen, paidAt, saleNumber, alertName, buyerLang: lang, siteUrl })
     // Awaited so serverless hosts don't cut it off; a failure never affects the buyer.

@@ -6,6 +6,8 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
 
+import { env } from "@/lib/env"
+
 export const KEY = {
   mailed: (purchaseId: string) => `meta-ads:mailed:${purchaseId}`,
   sales: "meta-ads:sales", // set of paid purchase ids
@@ -16,13 +18,12 @@ export const KEY = {
   recentDownloads: "meta-ads:recent-downloads", // list of recent Basic downloads (state + time only)
 } as const
 
-const redisEnabled = () =>
-  Boolean(process.env.UPSTASH_REDIS_REST_URL?.trim() && process.env.UPSTASH_REDIS_REST_TOKEN?.trim())
+const redisEnabled = () => Boolean(env.upstashUrl() && env.upstashToken())
 
 async function redis<T>(command: (string | number)[]): Promise<T> {
-  const res = await fetch(process.env.UPSTASH_REDIS_REST_URL!.trim(), {
+  const res = await fetch(env.upstashUrl(), {
     method: "POST",
-    headers: { Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN!.trim()}` },
+    headers: { Authorization: `Bearer ${env.upstashToken()}` },
     body: JSON.stringify(command),
     cache: "no-store",
   })
