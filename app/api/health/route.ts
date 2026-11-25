@@ -1,12 +1,12 @@
-import { env } from "@/lib/env"
+import { env, settingsSet } from "@/lib/env"
 import { SITE_URL } from "@/lib/site"
 
 // Setup check: what this deployment can use, and whether Upstash answers.
-// Shows yes/no only, never a key or token. "default" means the built-in value
-// from lib/env.ts is in use (fine for non-secret settings).
+// Shows yes/no only, never a key or token. For settings, "set" means a value
+// came from Cloudflare (Build or runtime); "default" means lib/env.ts's
+// built-in value is used (fine for non-secret settings).
 export const dynamic = "force-dynamic"
 
-const src = (k: string) => (process.env[k]?.trim() ? "env" : "default")
 const secret = (k: string) => Boolean(process.env[k]?.trim())
 
 async function upstashPing() {
@@ -37,13 +37,7 @@ export async function GET() {
         MAILJET_API_SECRET: secret("MAILJET_API_SECRET"),
         UPSTASH_REDIS_REST_TOKEN: secret("UPSTASH_REDIS_REST_TOKEN"),
       },
-      settings: {
-        CHIP_BRAND_ID: src("CHIP_BRAND_ID"),
-        CHIP_API_URL: src("CHIP_API_URL"),
-        UPSTASH_REDIS_REST_URL: src("UPSTASH_REDIS_REST_URL"),
-        MAIL_FROM: src("MAIL_FROM"),
-        ADMIN_EMAIL: src("ADMIN_EMAIL"),
-      },
+      settings: Object.fromEntries(Object.entries(settingsSet()).map(([k, v]) => [k, v ? "set" : "default"])),
       upstashPing: await upstashPing(),
     },
     { headers: { "Cache-Control": "no-store" } }

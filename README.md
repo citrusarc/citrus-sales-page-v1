@@ -125,9 +125,11 @@ Only one of GTM-PNTNNW3W (Tag Manager) or GTM-K9CKZQXK (GA4's own Google tag) ma
   in at build time, so they must be here: `NEXT_PUBLIC_SITE_URL=https://metaads.citrusarc.studio`,
   `NEXT_PUBLIC_GTM_ID=GTM-PNTNNW3W`.
 - **Secrets** (Workers → Settings → Variables and Secrets, type *Secret*): `CHIP_API_KEY`, `MAILJET_API_KEY`,
-  `MAILJET_API_SECRET`, `UPSTASH_REDIS_REST_TOKEN`. Git deploys keep Secrets but **drop plain Variables**, so
-  non-secret settings (CHIP brand ID, Upstash URL, sender, admin email) have built-in defaults in `lib/env.ts`.
-  Check `/api/health` after a deploy.
+  `MAILJET_API_SECRET`, `UPSTASH_REDIS_REST_TOKEN`. Git deploys keep Secrets.
+- **Non-secret settings** (`ADMIN_EMAIL`, `CHIP_BRAND_ID`, `CHIP_API_URL`, `MAIL_FROM`, `MAIL_FROM_NAME`,
+  `UPSTASH_REDIS_REST_URL`) go in **Build** variables: `next.config.ts` bakes them into the server code, and Build
+  variables survive deploys (plain runtime Variables don't). Each has a default in `lib/env.ts`.
+  Check `/api/health` after a deploy: secrets `true`, settings `set`/`default`, `upstashPing: "PONG"`.
 - The paid zip is bundled into server code by `npm run build` (`prebuild` → `scripts/embed-zip.mjs`), because
   Workers can't read `private/` from disk.
 - For "Seseorang dari Selangor" download alerts: Rules → Transform Rules → Managed Transforms → turn on
