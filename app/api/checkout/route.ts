@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "not_configured" }, { status: 503 })
   }
 
-  let body: { email?: unknown; name?: unknown }
+  let body: { email?: unknown; name?: unknown; lang?: unknown }
   try {
     body = await request.json()
   } catch {
@@ -39,6 +39,11 @@ export async function POST(request: Request) {
         console.error("Couldn't save alert name", err)
       )
     }
+
+    // The language the buyer is using, so the email and thank-you page match it.
+    await setValue(KEY.lang(purchase.id), body.lang === "en" ? "en" : "bm", 60 * 60 * 24 * 30).catch((err) =>
+      console.error("Couldn't save buyer language", err)
+    )
 
     // Remember the purchase in this browser so /terima-kasih can verify it
     // when CHIP redirects back.

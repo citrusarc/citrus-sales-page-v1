@@ -5,13 +5,14 @@ import { ArrowRight, Loader2, Lock, X } from "lucide-react"
 
 import { Pill, Rich } from "@/components/landing/primitives"
 import { useLang } from "@/lib/i18n"
-import { ADVANCED } from "@/lib/product"
+import { useActions } from "@/components/landing/actions"
 
 const input =
   "mt-2 w-full rounded-xl border border-input bg-canvas px-4 py-3 text-base outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-ink focus:bg-white"
 
 export function BuyDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { t } = useLang()
+  const { t, lang } = useLang()
+  const { priceLabel } = useActions()
   const ref = React.useRef<HTMLDialogElement>(null)
   const [loading, setLoading] = React.useState(false)
   const [error, setError] = React.useState("")
@@ -32,7 +33,7 @@ export function BuyDialog({ open, onClose }: { open: boolean; onClose: () => voi
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: fd.get("email"), name: fd.get("name") }),
+        body: JSON.stringify({ email: fd.get("email"), name: fd.get("name"), lang }),
       })
       const data = await res.json().catch(() => ({}))
       if (res.ok && data.checkoutUrl) {
@@ -64,7 +65,7 @@ export function BuyDialog({ open, onClose }: { open: boolean; onClose: () => voi
         </button>
 
         <span className="text-xs font-semibold tracking-[0.18em] text-brand uppercase">
-          Meta Ads Advanced · RM{ADVANCED.priceRM}
+          Meta Ads Advanced · {priceLabel}
         </span>
         <h3 className="mt-3 text-3xl leading-none font-semibold tracking-tight uppercase">{t.buy.title}</h3>
         <p className="mt-2 text-muted-foreground">{t.buy.sub}</p>
@@ -101,7 +102,7 @@ export function BuyDialog({ open, onClose }: { open: boolean; onClose: () => voi
             className="w-full"
             icon={loading ? <Loader2 className="size-5 animate-spin" /> : <ArrowRight className="size-5" />}
           >
-            {loading ? t.buy.loading : t.buy.submit}
+            {loading ? t.buy.loading : t.buy.submit.replace("{price}", priceLabel)}
           </Pill>
           <p className="text-center text-xs leading-relaxed text-muted-foreground">
             <Rich text={t.buy.agree} />

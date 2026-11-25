@@ -3,7 +3,7 @@ import { cookies, headers } from "next/headers"
 
 import { ThanksView } from "@/components/landing/thanks-view"
 import { getPurchase, isPaidAdvanced } from "@/lib/chip"
-import { deliverAdvanced } from "@/lib/deliver"
+import { deliverAdvanced, storedLang } from "@/lib/deliver"
 import { PURCHASE_COOKIE } from "@/lib/product"
 
 export const metadata: Metadata = {
@@ -43,5 +43,9 @@ export default async function ThanksPage({ searchParams }: PageProps<"/terima-ka
   const delivery = paid ? await deliverAdvanced(purchase, await siteOrigin()) : null
   const emailed = delivery === "sent" || delivery === "already"
 
-  return <ThanksView state={state} email={paid && emailed ? (purchase?.client?.email ?? null) : null} emailFailed={paid && !emailed} />
+  // Show the page in the language they paid in (same as their email). If it
+  // wasn't recorded, the page keeps the language saved in this browser.
+  const lang = (purchase && (await storedLang(purchase.id))) || undefined
+
+  return <ThanksView state={state} lang={lang} email={paid && emailed ? (purchase?.client?.email ?? null) : null} emailFailed={paid && !emailed} />
 }

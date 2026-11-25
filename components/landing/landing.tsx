@@ -12,10 +12,11 @@ import { Nav } from "@/components/landing/nav"
 import { Pricing } from "@/components/landing/pricing"
 import { PurchaseAlerts } from "@/components/landing/purchase-alerts"
 import { Tutorial } from "@/components/landing/tutorial"
+import type { Price } from "@/lib/product"
 
-export function Landing() {
+export function Landing({ price }: { price: Price }) {
   return (
-    <ActionsProvider>
+    <ActionsProvider price={price}>
       <Nav />
       <main>
         <Hero />

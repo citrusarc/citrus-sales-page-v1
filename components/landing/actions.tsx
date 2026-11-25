@@ -7,17 +7,22 @@ import { BuyDialog } from "@/components/landing/buy-dialog"
 import { confetti } from "@/components/landing/confetti"
 import { FailedDialog } from "@/components/landing/failed-dialog"
 import { useLang } from "@/lib/i18n"
-import { BASIC } from "@/lib/product"
+import type { RecentEvent } from "@/app/api/stats/route"
+import { BASIC, PRICING, type Price } from "@/lib/product"
 
 type Toast = { id: number; text: string; tone: "ok" | "warn" }
 /** Real counts from /api/stats; null until there are enough to show. */
 export type Stats = {
   downloads: number | null
   sales: number | null
-  recent: { name: string | null; at: number }[]
+  recent: RecentEvent[]
 }
 type Actions = {
   stats: Stats
+  /** Current price; switches to the regular price when the launch ends. */
+  price: Price
+  /** "RM19" — fills the {price} token in dict strings. */
+  priceLabel: string
   openBuy: () => void
   downloadBasic: (e: React.MouseEvent) => void
   toast: (text: string, tone?: Toast["tone"]) => void
@@ -27,8 +32,9 @@ const PREVIEW_STATS = (): Stats => ({
   downloads: 214,
   sales: 38,
   recent: [
-    { name: "Nur Sy***an", at: Date.now() - 2 * 3600e3 },
-    { name: null, at: Date.now() - 26 * 3600e3 },
+    { kind: "download", state: "Selangor", at: Date.now() - 3 * 60e3 },
+    { kind: "sale", name: "Nur Sy***an", at: Date.now() - 2 * 3600e3 },
+    { kind: "download", state: null, at: Date.now() - 5 * 3600e3 },
   ],
 })
 
@@ -40,11 +46,23 @@ export function useActions() {
   return c
 }
 
-export function ActionsProvider({ children }: { children: React.ReactNode }) {
+export function ActionsProvider({ children, price: initialPrice }: { children: React.ReactNode; price: Price }) {
   const { t } = useLang()
   const [buyOpen, setBuyOpen] = React.useState(false)
   const [failedOpen, setFailedOpen] = React.useState(false)
   const [toasts, setToasts] = React.useState<Toast[]>([])
+  const [price, setPrice] = React.useState<Price>(initialPrice)
+
+  // Keeps an open tab honest: at the deadline, show the regular price.
+  React.useEffect(() => {
+    if (!initialPrice.launchEndsAt) return
+    const ms = Date.parse(initialPrice.launchEndsAt) - Date.now()
+    if (ms > 2 ** 31 - 1) return // more than ~24 days away; the page will have refreshed by then
+    const end = () => setPrice({ priceRM: PRICING.regularRM, regularRM: PRICING.regularRM, launchEndsAt: null })
+    const id = setTimeout(end, Math.max(0, ms))
+    return () => clearTimeout(id)
+  }, [initialPrice])
+
   const [stats, setStats] = React.useState<Stats>({ downloads: null, sales: null, recent: [] })
 
   React.useEffect(() => {
@@ -103,8 +121,15 @@ export function ActionsProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const value = React.useMemo(
-    () => ({ stats, openBuy: () => setBuyOpen(true), downloadBasic, toast }),
-    [stats, downloadBasic, toast]
+    () => ({
+      stats,
+      price,
+      priceLabel: `RM${price.priceRM}`,
+      openBuy: () => setBuyOpen(true),
+      downloadBasic,
+      toast,
+    }),
+    [stats, price, downloadBasic, toast]
   )
 
   return (

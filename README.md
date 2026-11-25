@@ -3,7 +3,7 @@
 Landing page for the Citrus Arc **Meta Ads** Claude skills. BM by default, EN toggle.
 
 - **Basic** (free): `public/downloads/meta-ads-basic.zip`, served directly.
-- **Advanced** (paid, price in `lib/product.ts`): `private/meta-ads-advanced.zip`, only served by
+- **Advanced** (paid, price and launch deadline in `PRICING`, `lib/product.ts`): `private/meta-ads-advanced.zip`, only served by
   `/api/download/advanced` after a CHIP purchase is verified as `paid`.
 
 ## Setup
@@ -71,5 +71,17 @@ All from real data in the same store (`lib/kv.ts`), nothing invented:
 - `/terma` (terms, licence, refund policy at `/terma#bayaran-balik`) and `/privasi` (PDPA notice), BM and EN.
   Content lives in `lib/legal.ts`; bump `LEGAL_UPDATED` when you change it. Linked from the footer, the FAQ
   and the buy form.
-- `app/opengraph-image.png` / `app/twitter-image.png` is the link preview for WhatsApp, Facebook and X. The
-  price is baked in: if it changes, edit `scripts/share-image.html`, screenshot it at 1200×630 and save over both.
+- `app/opengraph-image.png` / `app/twitter-image.png` is the link preview for WhatsApp, Facebook and X (no
+  price on it, so it stays right when the launch price ends). Source: `scripts/share-image.html`.
+
+## Launch price
+
+`PRICING` in `lib/product.ts`: RM19 until 31 Dec 2026 23:59 MYT, then RM29. The price is worked out on the
+server, so the page, the countdown and what CHIP charges all switch at the deadline on their own (the home
+page re-renders every 5 minutes; an open tab switches itself). Set `launch` to `null` to remove it.
+
+## Alerts
+
+Bottom-right alerts show real events only: paid Advanced purchases (masked name) and Basic downloads
+("Seseorang dari Selangor download Meta Ads Basic"). The state comes from the host's geo headers
+(Vercel or Cloudflare with visitor location headers on); without them it just says "Seseorang".

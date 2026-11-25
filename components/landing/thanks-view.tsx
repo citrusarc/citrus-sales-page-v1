@@ -8,22 +8,30 @@ import { ArrowLeft, ArrowRight, Download, Hourglass, MailCheck, MailWarning, Par
 import { BrandLogo } from "@/components/landing/brand-logo"
 import { confetti } from "@/components/landing/confetti"
 import { ContactLinks } from "@/components/landing/final-cta"
-import { LangToggle } from "@/components/landing/nav"
 import { PillLink } from "@/components/landing/primitives"
+import type { Lang } from "@/lib/dict"
 import { useLang } from "@/lib/i18n"
 
 export function ThanksView({
   state,
+  lang,
   email = null,
   emailFailed = false,
 }: {
   state: "paid" | "pending" | "missing"
+  /** The language the buyer paid in; the page switches to it. */
+  lang?: Lang
   /** Set when the skill file was emailed to the buyer. */
   email?: string | null
   emailFailed?: boolean
 }) {
-  const { t } = useLang()
+  const { t, setLang } = useLang()
   const router = useRouter()
+
+  // Match the language of the buyer's email (and remember it for the site).
+  React.useEffect(() => {
+    if (lang) setLang(lang)
+  }, [lang, setLang])
 
   React.useEffect(() => {
     if (state === "paid") {
@@ -47,13 +55,14 @@ export function ThanksView({
           aria-hidden
           className="pointer-events-none absolute -right-40 -bottom-60 size-160 rounded-full bg-brand/25 blur-[140px]"
         />
-        {/* header and content share one column, so everything lines up */}
-        <div className="relative mx-auto flex w-full max-w-2xl items-center justify-between px-5 pt-6 sm:px-8">
+        {/* header and content share one column, so everything lines up. No
+            language switch here: the page keeps the language chosen on the
+            main page. */}
+        <div className="relative mx-auto flex w-full max-w-2xl items-center px-5 pt-6 sm:px-8">
           <Link href="/" className="flex items-center gap-2.5" aria-label="Citrus Arc">
             <BrandLogo className="h-7 w-auto" />
             <span className="text-sm font-semibold">Meta Ads Skill</span>
           </Link>
-          <LangToggle dark />
         </div>
 
         <div className="relative mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-5 py-16 sm:px-8">

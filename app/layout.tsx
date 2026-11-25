@@ -4,7 +4,6 @@ import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { LangProvider } from "@/lib/i18n"
-import { ADVANCED } from "@/lib/product"
 import { cn } from "@/lib/utils"
 
 const sans = Geist({ subsets: ["latin"], variable: "--font-sans" })
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
     "Ajar Claude jadi pakar Facebook & Instagram Ads untuk bisnes anda. Skill Basic percuma, Advanced untuk audit akaun, creative, testing, WhatsApp funnel & compliance Malaysia.",
   openGraph: {
     title: "Meta Ads Skill untuk Claude — Citrus Arc",
-    description: `Skill Claude untuk owner SME Malaysia. Basic percuma, Advanced RM${ADVANCED.priceRM}.`,
+    description: "Skill Claude untuk owner SME Malaysia. Basic percuma, Advanced untuk audit akaun penuh.",
     locale: "ms_MY",
     type: "website",
     siteName: "Citrus Arc Studio",

@@ -3,12 +3,13 @@
 import { Check, CreditCard, Download } from "lucide-react"
 
 import { useActions } from "@/components/landing/actions"
+import { LaunchCountdown } from "@/components/landing/launch-countdown"
 import { Pill, SectionHead } from "@/components/landing/primitives"
 import { useLang } from "@/lib/i18n"
 
 export function Pricing() {
   const { t } = useLang()
-  const { openBuy, downloadBasic, stats } = useActions()
+  const { openBuy, downloadBasic, stats, priceLabel } = useActions()
   const b = t.pricing.basic
   const a = t.pricing.advanced
 
@@ -58,9 +59,10 @@ export function Pricing() {
           <h3 className="relative mt-4 text-2xl font-semibold tracking-tight uppercase">{a.name}</h3>
           <p className="relative mt-1 text-white/60">{a.desc}</p>
           <div className="relative mt-8 flex items-baseline gap-3">
-            <span className="text-6xl font-semibold tracking-tight text-brand">{a.price}</span>
+            <span className="text-6xl font-semibold tracking-tight text-brand">{a.price.replace("{price}", priceLabel)}</span>
             <span className="text-white/60">{a.per}</span>
           </div>
+          <LaunchCountdown variant="card" />
           {stats.sales !== null && (
             <p className="relative mt-2 text-sm text-white/60">
               <span className="font-semibold text-white tabular-nums">{stats.sales.toLocaleString("en-MY")}</span>{" "}
@@ -76,7 +78,7 @@ export function Pricing() {
             ))}
           </ul>
           <Pill onClick={openBuy} className="relative mt-10 w-full">
-            {a.cta}
+            {a.cta.replace("{price}", priceLabel)}
           </Pill>
           <p className="relative mt-4 flex items-center justify-center gap-2 text-xs text-white/50">
             <CreditCard className="size-4" /> {t.pricing.pay}

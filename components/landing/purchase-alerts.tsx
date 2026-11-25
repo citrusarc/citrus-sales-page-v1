@@ -1,19 +1,20 @@
 "use client"
 
 import * as React from "react"
-import { BadgeCheck, X } from "lucide-react"
+import { BadgeCheck, Download, X } from "lucide-react"
 
 import { useActions } from "@/components/landing/actions"
 import { useLang } from "@/lib/i18n"
 
-const FIRST_DELAY = 8000
+const FIRST_DELAY = 4000
 const SHOW_FOR = 6000
 const GAP = 18000
-const MAX_PER_VISIT = 3
+const MAX_PER_VISIT = 4
 
 /**
- * Small bottom-right alerts from real paid purchases only (/api/stats → recent).
- * Shows nothing when there are none. A few per visit, then stops.
+ * Small bottom-right alerts from real events only (/api/stats → recent): paid
+ * Advanced purchases and Basic downloads. Shows nothing when there are none.
+ * A few per visit, then stops.
  */
 export function PurchaseAlerts() {
   const { t, lang } = useLang()
@@ -23,8 +24,8 @@ export function PurchaseAlerts() {
   const [dismissed, setDismissed] = React.useState(false)
 
   React.useEffect(() => {
+    // (With Reduce Motion on, the alert still shows; it just doesn't animate in.)
     if (!recent.length || dismissed) return
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
     const count = Math.min(recent.length, MAX_PER_VISIT)
     const timers: ReturnType<typeof setTimeout>[] = []
     for (let i = 0; i < count; i++) {
@@ -45,14 +46,21 @@ export function PurchaseAlerts() {
       className="fixed right-4 bottom-4 z-80 flex max-w-[calc(100%-2rem)] animate-in-up items-center gap-3 rounded-2xl border border-border bg-surface py-3 pr-3 pl-3.5 shadow-xl sm:max-w-sm"
     >
       <span className="grid size-10 shrink-0 place-items-center rounded-full bg-accent text-brand">
-        <BadgeCheck className="size-5" />
+        {item.kind === "sale" ? <BadgeCheck className="size-5" /> : <Download className="size-5" />}
       </span>
       <div className="min-w-0 text-sm leading-snug">
-        <p className="truncate">
-          <strong className="font-semibold">{item.name ?? t.alerts.someone}</strong> {t.alerts.bought}
-        </p>
+        {item.kind === "sale" ? (
+          <p className="truncate">
+            <strong className="font-semibold">{item.name ?? t.alerts.someone}</strong> {t.alerts.bought}
+          </p>
+        ) : (
+          <p className="truncate">
+            <strong className="font-semibold">{t.alerts.someone}</strong>
+            {item.state ? ` ${t.alerts.from} ${item.state}` : ""} {t.alerts.downloaded}
+          </p>
+        )}
         <p className="text-xs text-muted-foreground">
-          {timeAgo(item.at, lang === "bm" ? "ms" : "en")} · {t.alerts.verified}
+          {timeAgo(item.at, lang === "bm" ? "ms" : "en")}
         </p>
       </div>
       <button

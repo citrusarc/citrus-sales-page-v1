@@ -4,11 +4,19 @@ import { readFile } from "node:fs/promises"
 import path from "node:path"
 
 import { isPaidAdvanced, type ChipPurchase } from "@/lib/chip"
-import { addToSet, getValue, KEY, pushCapped } from "@/lib/kv"
+import { addToSet, getValue, KEY, pushCapped, setSize } from "@/lib/kv"
 import { emailConfigured, sendEmail } from "@/lib/mailjet"
-import { buyerEmail, esc } from "@/lib/email-template"
-import { ADVANCED, CONTACT } from "@/lib/product"
+import { buyerEmail, saleEmail, type EmailLang } from "@/lib/email-template"
+import { ADVANCED, CONTACT, currentPrice } from "@/lib/product"
 import { claim, release } from "@/lib/sent-log"
+
+/** The language the buyer was using when they paid, or null if not recorded. */
+export async function storedLang(purchaseId: string): Promise<EmailLang | null> {
+  const v = await getValue(KEY.lang(purchaseId)).catch(() => null)
+  return v === "en" || v === "bm" ? v : null
+}
+
+const buyerLang = async (purchaseId: string): Promise<EmailLang> => (await storedLang(purchaseId)) ?? "bm"
 
 export type DeliveryResult = "sent" | "already" | "disabled" | "failed" | "not-paid"
 
@@ -17,12 +25,15 @@ export async function deliverAdvanced(purchase: ChipPurchase | null, siteUrl: st
 
   // Real buyer count for the page. A set keyed by purchase id, so the thank-you
   // page and CHIP's callback can both call this without counting twice.
+  let alertName: string | null = null
+  let saleNumber: number | null = null
   try {
+    alertName = await getValue(KEY.alertName(purchase.id))
     if (await addToSet(KEY.sales, purchase.id)) {
       // First time we see this sale: add it to the real purchase alerts.
-      const name = await getValue(KEY.alertName(purchase.id))
-      await pushCapped(KEY.recent, JSON.stringify({ name, at: Date.now() }), 20)
+      await pushCapped(KEY.recent, JSON.stringify({ name: alertName, at: Date.now() }), 20)
     }
+    saleNumber = await setSize(KEY.sales)
   } catch (err) {
     console.error("Couldn't record sale", err)
   }
@@ -36,16 +47,14 @@ export async function deliverAdvanced(purchase: ChipPurchase | null, siteUrl: st
 
   if (!(await claim(purchase.id))) return "already"
 
+  const name = purchase.client?.full_name?.trim() || ""
+  const lang = await buyerLang(purchase.id)
+  const totalSen = purchase.purchase?.total ?? currentPrice().priceRM * 100
+  const paidAt = purchase.paid_on ? new Date(purchase.paid_on * 1000) : new Date()
+
   try {
     const zip = await readFile(path.join(process.cwd(), "private", ADVANCED.file))
-    const name = purchase.client?.full_name?.trim() || ""
-    const msg = buyerEmail({
-      name,
-      purchaseId: purchase.id,
-      siteUrl,
-      totalSen: purchase.purchase?.total ?? ADVANCED.priceRM * 100,
-      paidAt: purchase.paid_on ? new Date(purchase.paid_on * 1000) : new Date(),
-    })
+    const msg = buyerEmail({ name, purchaseId: purchase.id, siteUrl, totalSen, paidAt, lang })
     await sendEmail({
       to: { email, name: name || undefined },
       replyTo: CONTACT.email,
@@ -61,14 +70,11 @@ export async function deliverAdvanced(purchase: ChipPurchase | null, siteUrl: st
   // Heads-up to the studio. Never affects the buyer's result.
   const admin = process.env.ADMIN_EMAIL
   if (admin) {
-    const total = ((purchase.purchase?.total ?? ADVANCED.priceRM * 100) / 100).toFixed(2)
-    const line = `${email} paid RM${total} for Meta Ads Advanced (CHIP ${purchase.id}).`
-    sendEmail({
-      to: { email: admin },
-      subject: `Jualan baru: Meta Ads Advanced — RM${total}`,
-      text: line,
-      html: `<p>${esc(line)}</p>`,
-    }).catch((err) => console.error("Admin sale email failed", err))
+    const msg = saleEmail({ buyerName: name, buyerEmail: email, purchaseId: purchase.id, totalSen, paidAt, saleNumber, alertName, buyerLang: lang, siteUrl })
+    // Awaited so serverless hosts don't cut it off; a failure never affects the buyer.
+    await sendEmail({ to: { email: admin }, replyTo: email, ...msg }).catch((err) =>
+      console.error("Admin sale email failed", err)
+    )
   }
 
   return "sent"

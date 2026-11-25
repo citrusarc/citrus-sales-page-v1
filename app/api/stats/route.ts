@@ -1,28 +1,44 @@
 import { getCount, KEY, readList, setSize } from "@/lib/kv"
 import { STATS_MIN } from "@/lib/product"
 
-const RECENT_DAYS = 30
+const DAY = 24 * 60 * 60 * 1000
 
-// Real numbers only. Counts are null until they reach STATS_MIN; `recent` is
-// the last real purchases (masked name only when the buyer agreed).
+export type RecentEvent =
+  | { kind: "sale"; name: string | null; at: number }
+  | { kind: "download"; state: string | null; at: number }
+
+function parse<T>(raw: string[]): T[] {
+  return raw.flatMap((r) => {
+    try {
+      return [JSON.parse(r) as T]
+    } catch {
+      return []
+    }
+  })
+}
+
+// Real numbers and events only. Counts are null until they reach STATS_MIN.
+// `recent` mixes real purchases (last 30 days; masked name, see lib/mask.ts)
+// and real Basic downloads (last 7 days; state only), newest first.
 export async function GET() {
   try {
-    const [downloads, sales, raw] = await Promise.all([
+    const [downloads, sales, rawSales, rawDownloads] = await Promise.all([
       getCount(KEY.downloads),
       setSize(KEY.sales),
       readList(KEY.recent, 10),
+      readList(KEY.recentDownloads, 10),
     ])
-    const since = Date.now() - RECENT_DAYS * 24 * 60 * 60 * 1000
-    const recent = raw
-      .map((r) => {
-        try {
-          const o = JSON.parse(r) as { name?: string | null; at?: number }
-          return { name: typeof o.name === "string" ? o.name : null, at: Number(o.at) }
-        } catch {
-          return null
-        }
-      })
-      .filter((r): r is { name: string | null; at: number } => !!r && r.at >= since)
+    const now = Date.now()
+    const recent: RecentEvent[] = [
+      ...parse<{ name?: unknown; at?: unknown }>(rawSales)
+        .map((o) => ({ kind: "sale" as const, name: typeof o.name === "string" ? o.name : null, at: Number(o.at) }))
+        .filter((e) => e.at >= now - 30 * DAY),
+      ...parse<{ state?: unknown; at?: unknown }>(rawDownloads)
+        .map((o) => ({ kind: "download" as const, state: typeof o.state === "string" ? o.state : null, at: Number(o.at) }))
+        .filter((e) => e.at >= now - 7 * DAY),
+    ]
+      .sort((a, b) => b.at - a.at)
+      .slice(0, 10)
 
     return Response.json(
       {

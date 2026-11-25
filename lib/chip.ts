@@ -1,6 +1,6 @@
 // Server-side only: uses CHIP_API_KEY. Import from route handlers and
 // server components, never from a "use client" file.
-import { ADVANCED } from "@/lib/product"
+import { ADVANCED, currentPrice } from "@/lib/product"
 
 // Same variable names as citrus-class-v1, so the keys can be shared.
 const API = (process.env.CHIP_API_URL || "https://gate.chip-in.asia/api/v1").replace(/\/$/, "")
@@ -52,7 +52,8 @@ export async function createAdvancedPurchase(input: {
       },
       purchase: {
         currency: "MYR",
-        products: [{ name: ADVANCED.name, price: ADVANCED.priceRM * 100 }],
+        // Priced on the server at the moment of purchase (launch price until its deadline).
+        products: [{ name: ADVANCED.name, price: currentPrice().priceRM * 100 }],
       },
       success_redirect: `${input.origin}/terima-kasih`,
       failure_redirect: `${input.origin}/?bayar=gagal#harga`,

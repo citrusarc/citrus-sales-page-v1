@@ -4,12 +4,13 @@ import { Download, ShieldCheck } from "lucide-react"
 
 import { useActions } from "@/components/landing/actions"
 import { ChatDemo } from "@/components/landing/chat-demo"
+import { LaunchCountdown } from "@/components/landing/launch-countdown"
 import { Pill } from "@/components/landing/primitives"
 import { useLang } from "@/lib/i18n"
 
 export function Hero() {
   const { t } = useLang()
-  const { openBuy, downloadBasic, stats } = useActions()
+  const { openBuy, downloadBasic, stats, priceLabel } = useActions()
   const counts = [
     { n: stats.downloads, label: t.hero.statDownloads },
     { n: stats.sales, label: t.hero.statSales },
@@ -41,9 +42,11 @@ export function Hero() {
                 {t.hero.ctaFree}
               </Pill>
               <Pill onClick={openBuy} variant="outline" className="text-white">
-                {t.hero.ctaPaid}
+                {t.hero.ctaPaid.replace("{price}", priceLabel)}
               </Pill>
             </div>
+
+            <LaunchCountdown variant="hero" />
 
             <p className="mt-6 flex items-center gap-2 text-sm text-white/50">
               <ShieldCheck className="size-4 text-brand" />

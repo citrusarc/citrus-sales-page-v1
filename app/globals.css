@@ -96,6 +96,18 @@
     background: var(--brand);
     color: #fff;
   }
+  /* Tailwind v4 resets buttons to the default cursor; clickable things get the hand. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="radio"],
+  summary,
+  label:has(input[type="checkbox"], input[type="radio"]),
+  input[type="range"] {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
   :focus-visible {
     outline: 2px solid var(--brand);
     outline-offset: 2px;

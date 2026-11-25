@@ -12,7 +12,7 @@ import { CONTACT } from "@/lib/product"
 
 export function FinalCta() {
   const { t } = useLang()
-  const { openBuy, downloadBasic } = useActions()
+  const { openBuy, downloadBasic, priceLabel } = useActions()
   return (
     <section className="p-2 sm:p-3">
       <div className="bg-citrus relative overflow-hidden rounded-[28px] text-white sm:rounded-[36px]">
@@ -27,7 +27,7 @@ export function FinalCta() {
               {t.hero.ctaFree}
             </Pill>
             <Pill onClick={openBuy} variant="outline" className="text-white">
-              {t.hero.ctaPaid}
+              {t.hero.ctaPaid.replace("{price}", priceLabel)}
             </Pill>
           </div>
         </div>

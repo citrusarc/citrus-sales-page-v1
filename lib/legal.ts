@@ -4,7 +4,7 @@
 // [text](url) inside a string becomes a link.
 
 import type { Lang } from "@/lib/dict"
-import { ADVANCED, CONTACT } from "@/lib/product"
+import { CONTACT } from "@/lib/product"
 
 export const COMPANY = {
   name: "Citrus Arc Studio",
@@ -17,7 +17,6 @@ export const LEGAL_UPDATED = "2026-11-25"
 export type LegalSection = { id: string; heading: string; blocks: (string | string[])[] }
 export type LegalDoc = { title: string; description: string; intro: string; sections: LegalSection[] }
 
-const P = `RM${ADVANCED.priceRM}`
 const mail = `[${CONTACT.email}](mailto:${CONTACT.email})`
 const wa = `[WhatsApp](${CONTACT.whatsapp})`
 
@@ -40,7 +39,7 @@ const termsBm: LegalDoc = {
         "Kami menjual skill untuk Claude (produk AI oleh Anthropic) dalam bentuk fail digital (.zip):",
         [
           "Meta Ads Basic — percuma untuk dimuat turun.",
-          `Meta Ads Advanced — ${P}, bayaran sekali. Harga dalam Ringgit Malaysia (MYR).`,
+          "Meta Ads Advanced — bayaran sekali, pada harga yang dipaparkan di laman semasa anda membeli (termasuk harga pelancaran, jika ada). Harga dalam Ringgit Malaysia (MYR).",
         ],
         "Skill memberi panduan dan draf. Ia tidak log masuk, menyiarkan atau mengubah akaun iklan anda.",
       ],
@@ -139,7 +138,7 @@ const termsEn: LegalDoc = {
       heading: "Products",
       blocks: [
         "We sell skills for Claude (an AI product by Anthropic) as digital files (.zip):",
-        ["Meta Ads Basic — free to download.", `Meta Ads Advanced — ${P}, one-time payment. Prices are in Malaysian Ringgit (MYR).`],
+        ["Meta Ads Basic — free to download.", "Meta Ads Advanced — one-time payment, at the price shown on the site when you buy (including any launch price). Prices are in Malaysian Ringgit (MYR)."],
         "The skills give guidance and drafts. They never log in to, publish to or change your ad account.",
       ],
     },
@@ -248,6 +247,7 @@ const privacyBm: LegalDoc = {
           "pilihan bahasa anda, disimpan dalam browser anda sahaja",
           "kuki untuk mengaitkan pembelian dengan browser anda supaya anda boleh memuat turun fail (30 hari)",
           "kuki untuk mengira muat turun Basic sekali bagi setiap browser (1 tahun). Kiraan itu tidak mengandungi data peribadi.",
+          "apabila anda memuat turun Basic: negeri anggaran anda (cth. Selangor, daripada lokasi yang diberi oleh hos laman web) dan masa, untuk notifikasi muat turun. Alamat IP anda tidak disimpan.",
           "log pelayan biasa (seperti alamat IP) yang disimpan oleh hos laman web kami",
         ],
         "Kami tidak menggunakan Google Analytics atau kuki pengiklanan di laman ini.",
@@ -257,7 +257,7 @@ const privacyBm: LegalDoc = {
       id: "notifikasi",
       heading: "Notifikasi pembelian",
       blocks: [
-        "Laman ini memaparkan notifikasi ringkas untuk pembelian sebenar, contohnya \"Ah***d beli Meta Ads Advanced · 2 jam lalu\". Jika anda memberi nama semasa membeli, versi yang disamarkan (beberapa huruf sahaja) mungkin dipaparkan; tanpa nama, ia memaparkan \"Seseorang\". Emel, nama penuh dan butiran bayaran anda tidak pernah dipaparkan.",
+        "Laman ini memaparkan notifikasi ringkas untuk muat turun dan pembelian sebenar, contohnya \"Seseorang dari Selangor download Meta Ads Basic\" atau \"Ah***d beli Meta Ads Advanced · 2 jam lalu\". Jika anda memberi nama semasa membeli, versi yang disamarkan (beberapa huruf sahaja) mungkin dipaparkan; tanpa nama, ia memaparkan \"Seseorang\". Emel, nama penuh dan butiran bayaran anda tidak pernah dipaparkan.",
         `Mahu nama anda dibuang dari notifikasi? Hubungi ${mail} dan kami akan membuangnya.`,
       ],
     },
@@ -293,7 +293,7 @@ const privacyBm: LegalDoc = {
       id: "simpanan",
       heading: "Berapa lama kami menyimpannya",
       blocks: [
-        "Rekod pembelian disimpan selama yang diperlukan untuk rekod perniagaan dan cukai. Nama disamarkan untuk notifikasi disimpan 7 hari, dan senarai notifikasi hanya menyimpan 20 pembelian terkini.",
+        "Rekod pembelian disimpan selama yang diperlukan untuk rekod perniagaan dan cukai. Nama disamarkan untuk notifikasi disimpan 7 hari. Senarai notifikasi hanya menyimpan 20 pembelian dan 30 muat turun terkini.",
       ],
     },
     {
@@ -335,6 +335,7 @@ const privacyEn: LegalDoc = {
           "your language choice, stored only in your browser",
           "a cookie that links a purchase to your browser so you can download the file (30 days)",
           "a cookie that counts a Basic download once per browser (1 year). The count holds no personal data.",
+          "when you download Basic: your approximate state (e.g. Selangor, from the location our website host provides) and the time, for download notifications. Your IP address isn't stored.",
           "standard server logs (such as IP addresses) kept by our website host",
         ],
         "We don't use Google Analytics or advertising cookies on this site.",
@@ -344,7 +345,7 @@ const privacyEn: LegalDoc = {
       id: "notifikasi",
       heading: "Purchase notifications",
       blocks: [
-        "This site shows short notifications for real purchases, such as \"Ah***d bought Meta Ads Advanced · 2 hours ago\". If you give a name when buying, a masked version (only a few letters) may be shown; without a name, it shows \"Someone\". Your email, full name and payment details are never shown.",
+        "This site shows short notifications for real downloads and purchases, such as \"Someone in Selangor downloaded Meta Ads Basic\" or \"Ah***d bought Meta Ads Advanced · 2 hours ago\". If you give a name when buying, a masked version (only a few letters) may be shown; without a name, it shows \"Someone\". Your email, full name and payment details are never shown.",
         `Want your name removed from notifications? Contact ${mail} and we'll remove it.`,
       ],
     },
@@ -380,7 +381,7 @@ const privacyEn: LegalDoc = {
       id: "simpanan",
       heading: "How long we keep it",
       blocks: [
-        "Purchase records are kept for as long as we need them for business and tax records. Masked names for notifications are kept for 7 days, and the notification list only keeps the 20 most recent purchases.",
+        "Purchase records are kept for as long as we need them for business and tax records. Masked names for notifications are kept for 7 days. The notification lists only keep the 20 most recent purchases and 30 most recent downloads.",
       ],
     },
     {

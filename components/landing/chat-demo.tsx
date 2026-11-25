@@ -28,8 +28,8 @@ export function ChatDemo() {
   return (
     <div className="overflow-hidden rounded-3xl border border-white/10 bg-ink-soft/90 shadow-2xl backdrop-blur">
       {/* right side left empty: the hero's tag sits over that corner */}
-      <div className="flex items-center gap-3 border-b border-white/10 px-5 py-3.5 pr-36 text-xs">
-        <span className="flex items-center gap-2 font-mono text-white/60">
+      <div className="flex items-center gap-3 border-b border-white/10 px-5 py-3.5 pr-32 text-xs sm:pr-36">
+        <span className="flex shrink-0 items-center gap-2 font-mono whitespace-nowrap text-white/60">
           <Sparkles className="size-3.5 text-brand" />
           {chat.advanced ? "meta-ads-advanced" : "meta-ads-basic"}
         </span>

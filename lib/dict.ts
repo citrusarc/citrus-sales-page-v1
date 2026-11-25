@@ -1,8 +1,5 @@
-import { ADVANCED } from "@/lib/product"
-
 export type Lang = "bm" | "en"
 
-const P = ADVANCED.priceRM
 
 export type ChatScript = {
   chip: string
@@ -38,7 +35,7 @@ const bm = {
     h1c: "bisnes anda.",
     sub: "Skill yang buat Claude faham cara run Facebook & Instagram ads ala Malaysia — pilih objective, tulis hook BM, baca result, audit akaun. Bahasa santai, nombor sebenar, tiada janji kosong.",
     ctaFree: "Download Percuma",
-    ctaPaid: `Dapatkan Advanced · RM${P}`,
+    ctaPaid: "Dapatkan Advanced · {price}",
     note: "Tak perlu login akaun ads. Claude hanya buat draf & analisis.",
     statDownloads: "download Basic",
     statSales: "pembeli Advanced",
@@ -329,11 +326,11 @@ const bm = {
     },
     advanced: {
       name: "Meta Ads Advanced",
-      price: `RM${P}`,
+      price: "{price}",
       per: "bayar sekali",
       tag: "Paling berbaloi",
       desc: "Untuk owner serius, freelancer & agensi kecil.",
-      cta: `Beli sekarang — RM${P}`,
+      cta: "Beli sekarang — {price}",
       feats: [
         "Semua dalam Basic",
         "Audit akaun dari CSV + skrip Python",
@@ -355,12 +352,18 @@ const bm = {
       close: "Tutup",
     },
   },
+  launch: {
+    label: "Harga pelancaran",
+    raises: "Naik ke {regular} selepas {date}",
+    endsIn: "Tamat dalam",
+    units: { d: "hari", h: "jam", m: "min", s: "saat" },
+  },
   buy: {
     title: "Hampir siap!",
     sub: "Kami akan emel fail skill ke alamat ini lepas bayaran berjaya.",
     name: "Nama (pilihan)",
     email: "Emel",
-    submit: `Teruskan ke bayaran RM${P}`,
+    submit: "Teruskan ke bayaran {price}",
     loading: "Menyambung ke CHIP…",
     secure: "Anda akan dibawa ke halaman bayaran CHIP.",
     errors: {
@@ -375,7 +378,8 @@ const bm = {
   alerts: {
     someone: "Seseorang",
     bought: "beli Meta Ads Advanced",
-    verified: "Pembelian sebenar",
+    downloaded: "download Meta Ads Basic",
+    from: "dari",
     close: "Tutup notifikasi",
   },
   tutorial: {
@@ -545,7 +549,7 @@ const en: Dict = {
     h1c: "on demand.",
     sub: "A skill that makes Claude run Facebook & Instagram ads the Malaysian way — the right objective, scroll-stopping hooks in BM or English, plain-language results, full account audits. Real numbers, no empty promises.",
     ctaFree: "Free Download",
-    ctaPaid: `Get Advanced · RM${P}`,
+    ctaPaid: "Get Advanced · {price}",
     note: "No ad account login. Claude only drafts and analyses.",
     statDownloads: "Basic downloads",
     statSales: "Advanced buyers",
@@ -836,11 +840,11 @@ const en: Dict = {
     },
     advanced: {
       name: "Meta Ads Advanced",
-      price: `RM${P}`,
+      price: "{price}",
       per: "one-time",
       tag: "Best value",
       desc: "For serious owners, freelancers and small agencies.",
-      cta: `Buy now — RM${P}`,
+      cta: "Buy now — {price}",
       feats: [
         "Everything in Basic",
         "Account audit from CSV + Python script",
@@ -862,12 +866,18 @@ const en: Dict = {
       close: "Close",
     },
   },
+  launch: {
+    label: "Launch price",
+    raises: "Goes up to {regular} after {date}",
+    endsIn: "Ends in",
+    units: { d: "days", h: "hrs", m: "min", s: "sec" },
+  },
   buy: {
     title: "Almost there!",
     sub: "We'll email the skill file to this address once payment goes through.",
     name: "Name (optional)",
     email: "Email",
-    submit: `Continue to pay RM${P}`,
+    submit: "Continue to pay {price}",
     loading: "Connecting to CHIP…",
     secure: "You'll be taken to CHIP's payment page.",
     errors: {
@@ -882,7 +892,8 @@ const en: Dict = {
   alerts: {
     someone: "Someone",
     bought: "bought Meta Ads Advanced",
-    verified: "Real purchase",
+    downloaded: "downloaded Meta Ads Basic",
+    from: "in",
     close: "Dismiss notification",
   },
   tutorial: {

@@ -10,8 +10,10 @@ export const KEY = {
   mailed: (purchaseId: string) => `meta-ads:mailed:${purchaseId}`,
   sales: "meta-ads:sales", // set of paid purchase ids
   downloads: "meta-ads:basic-downloads", // counter
-  alertName: (purchaseId: string) => `meta-ads:alert-name:${purchaseId}`, // masked name, only with consent
+  alertName: (purchaseId: string) => `meta-ads:alert-name:${purchaseId}`, // masked name for purchase alerts
+  lang: (purchaseId: string) => `meta-ads:lang:${purchaseId}`, // "bm" | "en": buyer's page language
   recent: "meta-ads:recent", // list of recent real purchases, newest first
+  recentDownloads: "meta-ads:recent-downloads", // list of recent Basic downloads (state + time only)
 } as const
 
 const redisEnabled = () => Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN)
