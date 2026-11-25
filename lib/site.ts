@@ -43,7 +43,7 @@ export const STUDIO = {
 } as const
 
 /** Google Tag Manager container. Loads in production builds only. */
-export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "GTM-K9CKZQXK"
+export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "GTM-PNTNNW3W"
 
 /** localStorage key for the analytics choice (same name as citrusarc.studio). */
 export const CONSENT_KEY = "cas-analytics-consent"

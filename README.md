@@ -95,31 +95,34 @@ Bottom-right alerts show real events only: paid Advanced purchases (masked name)
   the launch deadline) and the FAQ.
 - **Crawlers**: `/robots.txt` names the AI answer-engine bots (as on citrusarc.studio) and keeps `/api/` and
   `/terima-kasih` out; `/sitemap.xml`; `/llms.txt` (plain-English summary for AI assistants, price at request time).
-- **Analytics**: Google Tag Manager `NEXT_PUBLIC_GTM_ID` (default GTM-K9CKZQXK), production builds only, with
+- **Analytics**: Google Tag Manager `NEXT_PUBLIC_GTM_ID` (default GTM-PNTNNW3W), production builds only, with
   Consent Mode (analytics cookies only after "Benarkan" in the cookie notice; ads storage always denied).
   dataLayer events for GTM triggers: `file_download` (Basic), `begin_checkout`, `purchase` (once per purchase,
   GA4 ecommerce format with `transaction_id`, `value`, `currency: MYR`).
 
 ## Google Tag Manager setup (one time)
 
-`scripts/gtm-container.json` holds the tags for GTM-K9CKZQXK:
+`scripts/gtm-container.json` holds the tags for GTM-PNTNNW3W:
 
 1. tagmanager.google.com → the container → **Admin → Import Container** → choose `scripts/gtm-container.json`.
 2. Workspace: *Existing (Default Workspace)*. Option: **Merge → Rename conflicting tags, triggers and variables**.
-3. Check the variable **GA4 Measurement ID** (`G-KMB66XBXLG`, the citrusarc.studio stream; Google recommends one
-   stream for a domain and its subdomains, filter by hostname in GA4). Use another `G-` ID if you prefer.
-4. **Preview** on metaads.citrusarc.studio (allow cookies, download Basic → `file_download` fires), then **Submit**.
+3. Check the variable **GA4 Measurement ID** is `G-MSGBN47GK4` (GA4 property *citrus-sales-page-v1*, web stream
+   https://metaads.citrusarc.studio). Don't also paste GA4's own gtag snippet into the site: GTM loads GA4, and
+   both together would count every visit twice.
+4. **Preview** on metaads.citrusarc.studio (allow cookies; the Google tag fires on load), then **Submit**.
+   Basic downloads are recorded by GA4 enhanced measurement as `file_download`, so there is no separate tag for it.
 5. GA4 → Admin → Events: mark `purchase` as a key event.
 
 If the import is refused, create the same by hand: a *Google tag* (tag ID = the G- ID, trigger
-*Initialization – All Pages*), and three *GA4 Event* tags (`purchase` and `begin_checkout` with
-"Send Ecommerce data" from the Data Layer; `file_download`), each on a *Custom Event* trigger with the same name.
+*Initialization – All Pages*), and two *GA4 Event* tags (`purchase` and `begin_checkout`, with
+"Send Ecommerce data" from the Data Layer), each on a *Custom Event* trigger with the same name.
+Only one of GTM-PNTNNW3W (Tag Manager) or GTM-K9CKZQXK (GA4's own Google tag) may be on the site, or visits count twice.
 
 ## Cloudflare (OpenNext on Workers)
 
 - **Build variables** (Workers → Settings → Build → Variables and secrets). `NEXT_PUBLIC_*` values are baked
   in at build time, so they must be here: `NEXT_PUBLIC_SITE_URL=https://metaads.citrusarc.studio`,
-  `NEXT_PUBLIC_GTM_ID=GTM-K9CKZQXK`.
+  `NEXT_PUBLIC_GTM_ID=GTM-PNTNNW3W`.
 - **Runtime variables** (Workers → Settings → Variables and Secrets): everything else in `.env.example`.
   Use *Secret* for `CHIP_API_KEY`, `MAILJET_API_SECRET`, `MAILJET_API_KEY`, `UPSTASH_REDIS_REST_TOKEN`.
   Upstash is required on Workers (no file system for the local `.data/` fallback).
