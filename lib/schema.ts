@@ -4,7 +4,7 @@
 
 import { dict, type Lang } from "@/lib/dict"
 import type { Price } from "@/lib/product"
-import { SITE_NAME, SITE_URL, STUDIO } from "@/lib/site"
+import { OG_IMAGE, SITE_NAME, SITE_URL, STUDIO } from "@/lib/site"
 
 const PRODUCT_COPY = {
   bm: {
@@ -28,7 +28,7 @@ export function homeSchema(price: Price, lang: Lang) {
   const c = PRODUCT_COPY[lang]
   const pageUrl = lang === "en" ? `${SITE_URL}/en` : `${SITE_URL}/`
   const inLanguage = lang === "en" ? "en-MY" : "ms-MY"
-  const image = `${SITE_URL}/opengraph-image.png`
+  const image = `${SITE_URL}${OG_IMAGE.url}`
   const offer = (name: string, priceRM: number, validUntil?: string | null) => ({
     "@type": "Offer",
     name,

@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 
 import type { Lang } from "@/lib/dict"
-import { SITE_NAME, SITE_URL, STUDIO } from "@/lib/site"
+import { OG_IMAGE, SITE_NAME, SITE_URL, STUDIO } from "@/lib/site"
 
 /** hreflang pairs for the two home pages. */
 export const HOME_LANGUAGES = { "ms-MY": "/", "en-MY": "/en", "x-default": "/" }
@@ -44,8 +44,14 @@ export function layoutMetadata(lang: Lang): Metadata {
       locale: c.locale,
       alternateLocale: [c.alt],
       type: "website",
+      images: [OG_IMAGE],
     },
-    twitter: { card: "summary_large_image", site: "@citrusarcstudio", creator: "@citrusarcstudio" },
+    twitter: {
+      card: "summary_large_image",
+      site: "@citrusarcstudio",
+      creator: "@citrusarcstudio",
+      images: [OG_IMAGE.url],
+    },
     category: "business",
   }
 }

@@ -2,8 +2,21 @@
 // citrusarc.studio (citrus-arc-studio/config/site.ts), so search and answer
 // engines tie this site to the same Citrus Arc Studio entity.
 
-/** Public URL of this site. Set NEXT_PUBLIC_SITE_URL in production. */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "")
+/** The live address. Used for production builds when NEXT_PUBLIC_SITE_URL isn't set at build time. */
+export const PRODUCTION_URL = "https://metaads.citrusarc.studio"
+
+/** Public URL of this site (canonical, sitemap, share image, structured data). */
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL || (process.env.NODE_ENV === "production" ? PRODUCTION_URL : "http://localhost:3000")
+).replace(/\/$/, "")
+
+/** Link preview image (1200×630), source in scripts/share-image.html. */
+export const OG_IMAGE = {
+  url: "/og-image.png",
+  width: 1200,
+  height: 630,
+  alt: "Ajar Claude jadi pakar Meta Ads bisnes anda — Meta Ads Skill oleh Citrus Arc Studio.",
+} as const
 
 export const SITE_NAME = "Meta Ads Skill untuk Claude"
 

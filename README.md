@@ -71,7 +71,7 @@ All from real data in the same store (`lib/kv.ts`), nothing invented:
 - `/terma` (terms, licence, refund policy at `/terma#bayaran-balik`) and `/privasi` (PDPA notice), BM and EN.
   Content lives in `lib/legal.ts`; bump `LEGAL_UPDATED` when you change it. Linked from the footer, the FAQ
   and the buy form.
-- `app/opengraph-image.png` / `app/twitter-image.png` is the link preview for WhatsApp, Facebook and X (no
+- `public/og-image.png` is the link preview for WhatsApp, Facebook and X (no
   price on it, so it stays right when the launch price ends). Source: `scripts/share-image.html`.
 
 ## Launch price
